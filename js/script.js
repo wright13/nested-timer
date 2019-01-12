@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                                         40,
                                         "A timer that I made");
   buildAndShowTimerHTML(testTimer, 3, "#timer");
+  testTimer.start();
 })
 
 
