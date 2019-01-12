@@ -11,34 +11,38 @@
 		this.autoStart = autoStart;	// Whether the timer should auto-start at end of previous timer (boolean)
 		this.nRepeat = repeat;	// Number of times the timer should repeat (integer)
 		this.subTimers = subTimers;	// List of sub-timers (Timer list)
-		this.intervalID = null;
-		
-		// Start the timer
-		this.start = function() {
-			var self = this;
-			this.intervalID = window.setInterval(function() {
-										// Decrement the timer's end time every second but don't let it go negative
-										if (self.timeCurrent >= 1) {
-											self.timeCurrent--;
-										} else {
-											self.pause();
-										}
-										console.log(self.name + " " + self.timeCurrent);
-									}, 1000);
-		}
-
-		// Pause the timer but don't reset the end time
-		this.pause = function() {
-			window.clearInterval(this.intervalID);
-		}
-
-		// Stop the timer and reset the end time
-		this.reset = function() {
-			window.clearInterval(this.intervalID);
-			this.timeCurrent = this.timeStart;
-		}
-
 	};
+		}
+
+		}
+
+		}
+
+	// Start the timer
+	Timer.prototype.start = function() {
+		var self = this;
+		
+		this.intervalID = window.setInterval(function() {
+									// Decrement the timer's end time every second but don't let it go negative
+									if (self.timeCurrent >= 1) {
+										self.timeCurrent--;
+									} else {
+										self.pause();
+									}
+								}, 1000);
+	}
+
+	// Pause the timer but don't reset the end time
+	Timer.prototype.pause = function() {
+		window.clearInterval(this.intervalID);
+	}
+
+	// Stop the timer and reset the end time
+	Timer.prototype.reset = function() {
+		window.clearInterval(this.intervalID);
+		this.timeCurrent = this.timeStart;
+	}
+
 
 	timerUtil.Timer = Timer;
 

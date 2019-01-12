@@ -37,11 +37,12 @@ function buildAndShowTimerHTML(timer, timerID, selector) {
   if (seconds < 10) {
     seconds = "0" + seconds;
   }
-  
-  request.onreadystatechange = function() {
-    var timerHTML = request.responseText;
 
+  request.onreadystatechange = function() {
+    // If the request has completed and is successful, fill in the retrieved HTML
+    // snippet with values from the timer
     if ((request.readyState == 4) && (request.status == 200)) {
+      var timerHTML = request.responseText;
       timerHTML = insertIntoSnippet(timerHTML, "timerID", timerID);
       timerHTML = insertIntoSnippet(timerHTML, "h", hours);
       timerHTML = insertIntoSnippet(timerHTML, "m", minutes);
@@ -50,9 +51,6 @@ function buildAndShowTimerHTML(timer, timerID, selector) {
       timerHTML = insertIntoSnippet(timerHTML, "timerDescription", timer.description);
 
       target.innerHTML = timerHTML;
-      console.log("readyState: " + request.readyState + " status: " + request.status);
-    } else {
-      console.log("readyState: " + request.readyState + " status: " + request.status);
     }
   };
 
