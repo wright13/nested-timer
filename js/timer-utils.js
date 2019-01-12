@@ -12,11 +12,38 @@
 		this.nRepeat = repeat;	// Number of times the timer should repeat (integer)
 		this.subTimers = subTimers;	// List of sub-timers (Timer list)
 	};
-		}
 
+	// Getters for current time in h, m, and s
+	var t = Timer.prototype;
+	Object.defineProperty(t, "h", {
+		get: function() {
+			var hours = Math.floor(this.timeCurrent / 3600);
+			if (hours < 10) {
+    			hours = "0" + hours;
+  			}
+			return(hours);	
 		}
+	});
 
+	Object.defineProperty(t, "m", {
+		get: function() {
+			var minutes = Math.floor((this.timeCurrent % 3600)/60);
+			if (minutes < 10) {
+			    minutes = "0" + minutes;
+			}
+			return(minutes);
 		}
+	});
+
+	Object.defineProperty(t, "s", {
+		get: function() {
+			var seconds = this.timeCurrent % 60;
+			if (seconds < 10) {
+				seconds = "0" + seconds;
+			}
+			return(seconds);
+		}
+	});
 
 	// Start the timer
 	Timer.prototype.start = function() {
