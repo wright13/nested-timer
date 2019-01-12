@@ -56,6 +56,8 @@
 									} else {
 										self.pause();
 									}
+									// Update timer display
+									updateHMS(self.h, self.m, self.s);
 								}, 1000);
 	}
 
@@ -70,6 +72,16 @@
 		this.timeCurrent = this.timeStart;
 	}
 
+	// Update timer display
+	function updateHMS(h, m, s){
+		var hTarget = document.querySelector(".clock .h");
+		var mTarget = document.querySelector(".clock .m");
+		var sTarget = document.querySelector(".clock .s");
+
+		hTarget.innerHTML = h;
+		mTarget.innerHTML = m;
+		sTarget.innerHTML = s;
+	}
 
 	timerUtil.Timer = Timer;
 
