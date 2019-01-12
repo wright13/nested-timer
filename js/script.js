@@ -1,3 +1,12 @@
+document.addEventListener("DOMContentLoaded", function (event) {
+  // Testing
+  var testTimer = new timerUtil.Timer("My timer",
+                                        40,
+                                        "A timer that I made");
+  buildAndShowTimerHTML(testTimer, 3, "#timer");
+})
+
+
 // Snippet URLs
 var timerURL = "html-snippets/timer-snippet.html";
 
