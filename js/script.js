@@ -23,21 +23,11 @@ function insertIntoSnippet(snippet, property, value) {
 // Fill in the properties of a timer HTML snippet and insert it into the element
 // identified by selector
 function buildAndShowTimerHTML(timer, timerID, selector) {
-  var hours = Math.floor(timer.timeStart / 3600);
-  var minutes = Math.floor((timer.timeStart % 3600)/60);
-  var seconds = timer.timeStart % 60;
+  var hours = timerUtil.padTime(timer.h);
+  var minutes = timerUtil.padTime(timer.m);
+  var seconds = timerUtil.padTime(timer.s);
   var target = document.querySelector(selector);
   var request = new XMLHttpRequest();
-
-  if (hours < 10) {
-    hours = "0" + hours;
-  }
-  if (minutes < 10) {
-    minutes = "0" + minutes;
-  }
-  if (seconds < 10) {
-    seconds = "0" + seconds;
-  }
 
   request.onreadystatechange = function() {
     // If the request has completed and is successful, fill in the retrieved HTML

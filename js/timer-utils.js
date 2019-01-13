@@ -18,9 +18,6 @@
 	Object.defineProperty(t, "h", {
 		get: function() {
 			var hours = Math.floor(this.timeCurrent / 3600);
-			if (hours < 10) {
-    			hours = "0" + hours;
-  			}
 			return(hours);	
 		}
 	});
@@ -28,9 +25,6 @@
 	Object.defineProperty(t, "m", {
 		get: function() {
 			var minutes = Math.floor((this.timeCurrent % 3600)/60);
-			if (minutes < 10) {
-			    minutes = "0" + minutes;
-			}
 			return(minutes);
 		}
 	});
@@ -38,9 +32,6 @@
 	Object.defineProperty(t, "s", {
 		get: function() {
 			var seconds = this.timeCurrent % 60;
-			if (seconds < 10) {
-				seconds = "0" + seconds;
-			}
 			return(seconds);
 		}
 	});
@@ -73,17 +64,28 @@
 	}
 
 	// Update timer display
+	// TODO: implement this with a unique timer ID
 	function updateHMS(h, m, s){
 		var hTarget = document.querySelector(".clock .h");
 		var mTarget = document.querySelector(".clock .m");
 		var sTarget = document.querySelector(".clock .s");
 
-		hTarget.innerHTML = h;
-		mTarget.innerHTML = m;
-		sTarget.innerHTML = s;
+		hTarget.innerHTML = padTime(h);
+		mTarget.innerHTML = padTime(m);
+		sTarget.innerHTML = padTime(s);
+	}
+
+	// Pads single digit hour, minute, or second values with a leading zero
+	function padTime(time) {
+		var textTime = time + "";
+		if (textTime.length < 2) {
+			textTime = "0" + textTime;
+		}
+		return textTime;
 	}
 
 	timerUtil.Timer = Timer;
+	timerUtil.padTime = padTime;
 
 	// Expose timerUtil to the global scope
 	global.timerUtil = timerUtil;
