@@ -1,4 +1,5 @@
-var timers = [];
+var timers = {};
+var currentId = 0;
 
 document.addEventListener("DOMContentLoaded", function (event) {
   // On click event for create timer button
@@ -74,8 +75,9 @@ function addMainTimer() {
                         repeat,
                         subTimers);
 
-  // Add timer to timer array
-  timers.push(timer);
+  // Add timer to timer list
+  timers[currentId] = timer;
+  currentId++;
 
   // Add timer to page
   buildAndShowTimerHTML(timer, timers.length, "#timer");
