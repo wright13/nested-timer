@@ -20,8 +20,28 @@
   </head>
 <body>
   <h1>Nested Timer</h1>
+
+  <form class="timer-main-set">
+    <div class="form-row">
+      <div class="col-auto">
+        <input type="number" class="form-control timer-h" placeholder="hh">
+      </div>
+      <span class="sep">:</span>
+      <div class="col-auto">
+        <input type="number" class="form-control timer-m" placeholder="mm">
+      </div>
+      <span class="sep">:</span>
+      <div class="col-auto">
+        <input type="number" class="form-control timer-s" placeholder="ss">
+      </div>
+    </div>
+    <div class="form-row">
+      <button type="button" class="btn btn-outline-primary" id="timer-main-add">Create Timer</button>
+    </div>
+  </form>
+
   <div id="timer">
-    <!-- For testing - timers go here -->
+    <!-- Timers go here -->
   </div>
 
   <!-- jQuery (Bootstrap JS plugins depend on it) -->

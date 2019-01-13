@@ -1,4 +1,10 @@
+var timers = [];
+
 document.addEventListener("DOMContentLoaded", function (event) {
+  // On click event for create timer button
+  var addMainTimerButton = document.getElementById("timer-main-add");
+  addMainTimerButton.onclick = addMainTimer;
+
   // Testing
   var testTimer = new timerUtil.Timer("My timer",
                                         40,
@@ -41,11 +47,36 @@ function buildAndShowTimerHTML(timer, timerID, selector) {
       timerHTML = insertIntoSnippet(timerHTML, "timerName", timer.name);
       timerHTML = insertIntoSnippet(timerHTML, "timerDescription", timer.description);
 
-      target.innerHTML = timerHTML;
+      target.insertAdjacentHTML("beforeend", timerHTML);
     }
   };
 
   request.open("GET", timerURL, true);
-  request.send(null);
-  
+  request.send(null); 
+}
+
+function addMainTimer() {
+  var h = document.querySelector(".timer-main-set .timer-h").value || 0;
+  var m = document.querySelector(".timer-main-set .timer-m").value || 0;
+  var s = document.querySelector(".timer-main-set .timer-s").value || 0;
+  var name = "placeholder";
+  var description = "placeholder";
+  var autoStart = true;
+  var repeat = 1;
+  var subTimers = {};
+
+  // Create new timer object from values provided in the form
+  var timer = new timerUtil.Timer(name,
+                        (3600 * h) + (60 * m) + (1*s),
+                        description,
+                        autoStart,
+                        repeat,
+                        subTimers);
+
+  // Add timer to timer array
+  timers.push(timer);
+
+  // Add timer to page
+  buildAndShowTimerHTML(timer, timers.length, "#timer");
+
 }
