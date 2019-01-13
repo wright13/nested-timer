@@ -28,7 +28,7 @@ function insertIntoSnippet(snippet, property, value) {
 
 // Fill in the properties of a timer HTML snippet and insert it into the element
 // identified by selector
-function buildAndShowTimerHTML(timer, timerID, selector) {
+function buildAndShowTimerHTML(timer, selector) {
   var hours = timerUtil.padTime(timer.h);
   var minutes = timerUtil.padTime(timer.m);
   var seconds = timerUtil.padTime(timer.s);
@@ -40,7 +40,7 @@ function buildAndShowTimerHTML(timer, timerID, selector) {
     // snippet with values from the timer
     if ((request.readyState == 4) && (request.status == 200)) {
       var timerHTML = request.responseText;
-      timerHTML = insertIntoSnippet(timerHTML, "timerID", timerID);
+      timerHTML = insertIntoSnippet(timerHTML, "timerId", timer.timerId);
       timerHTML = insertIntoSnippet(timerHTML, "h", hours);
       timerHTML = insertIntoSnippet(timerHTML, "m", minutes);
       timerHTML = insertIntoSnippet(timerHTML, "s", seconds);
@@ -66,7 +66,8 @@ function addMainTimer() {
   var subTimers = {};
 
   // Create new timer object from values provided in the form
-  var timer = new timerUtil.Timer(name,
+  var timer = new timerUtil.Timer(currentId,
+                        name,
                         (3600 * h) + (60 * m) + (1*s),
                         description,
                         autoStart,

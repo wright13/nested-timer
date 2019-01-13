@@ -3,7 +3,8 @@
 	var timerUtil = {};
 
 	// Timer object constructor
-	function Timer(name, time, description, autoStart, repeat, subTimers) {
+	function Timer(id, name, time, description, autoStart, repeat, subTimers) {
+		this.timerId = id;	// Unique ID for this timer object
 		this.name = name;		// Friendly name/label for the timer
 		this.timeStart = time;	// Time that the timer is originally set to (integer seconds)
 		this.description = description;	//Description of what the timer is for (string)
