@@ -64,14 +64,18 @@ function buildAndShowTimerHTML(timer, selector) {
 }
 
 function addMainTimer() {
-  var h = document.querySelector(".timer-main-set .timer-h").value || 0;
-  var m = document.querySelector(".timer-main-set .timer-m").value || 0;
-  var s = document.querySelector(".timer-main-set .timer-s").value || 0;
-  var name = "placeholder";
-  var description = "placeholder";
+  var h = document.querySelector("#timer-main-set .timer-h").value || 0;
+  var m = document.querySelector("#timer-main-set .timer-m").value || 0;
+  var s = document.querySelector("#timer-main-set .timer-s").value || 0;
+  var name = document.querySelector("#timer-main-name").value || "Timer";
+  var description = document.querySelector("#timer-main-description").value || "";
+  // TODO: set these through the create timer form
   var autoStart = true;
   var repeat = 1;
   var subTimers = {};
+
+  // Clear form
+  document.getElementById("timer-main-set").reset();
 
   // Create new timer object from values provided in the form
   var timer = new timerUtil.Timer(currentId,

@@ -21,7 +21,18 @@
 <body>
   <h1>Nested Timer</h1>
 
-  <form class="timer-main-set">
+  <form id="timer-main-set">
+    <div class="form-row">
+      <div class="col-auto">
+        <label for="timer-main-name">Timer name</label>
+        <input type="text" class="form-control" id="timer-main-name" placeholder="Timer name">
+      </div>
+      <div class="col-auto">
+        <label for="timer-main-description">Description (optional)</label>
+        <input type="text" class="form-control" id="timer-main-description" placeholder="Short description (optional)">
+      </div>
+    </div>
+    <div class="form-row">
     <div class="form-row">
       <div class="col-auto">
         <input type="number" class="form-control timer-h" placeholder="hh">
@@ -35,7 +46,7 @@
         <input type="number" class="form-control timer-s" placeholder="ss">
       </div>
     </div>
-    <div class="form-row">
+
       <button type="button" class="btn btn-outline-primary" id="timer-main-add">Create Timer</button>
     </div>
   </form>
