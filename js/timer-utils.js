@@ -12,6 +12,7 @@
 		this.autoStart = autoStart;	// Whether the timer should auto-start at end of previous timer (boolean)
 		this.nRepeat = repeat;	// Number of times the timer should repeat (integer)
 		this.subTimers = subTimers;	// List of sub-timers (Timer list)
+		this.running = false;	// Keep track of whether timer is currently running
 	};
 
 	// Getters for current time in h, m, and s
@@ -40,36 +41,41 @@
 	// Start the timer
 	Timer.prototype.start = function() {
 		var self = this;
-		
-		this.intervalID = window.setInterval(function() {
-									// Decrement the timer's end time every second but don't let it go negative
-									if (self.timeCurrent >= 1) {
-										self.timeCurrent--;
-									} else {
-										self.pause();
-									}
-									// Update timer display
-									updateHMS(self.h, self.m, self.s);
-								}, 1000);
+		if (!this.running) {	// Don't start another interval if the timer is already running
+			this.intervalID = window.setInterval(function() {
+										self.running = true;
+										// Decrement the timer's end time every second but don't let it go negative
+										if (self.timeCurrent >= 1) {
+											self.timeCurrent--;
+										} else {
+											self.pause();
+										}
+										// Update timer display
+										updateHMS(self.timerId, self.h, self.m, self.s);
+									}, 1000);
+		}
 	}
 
 	// Pause the timer but don't reset the end time
 	Timer.prototype.pause = function() {
 		window.clearInterval(this.intervalID);
+		this.running = false;
 	}
 
 	// Stop the timer and reset the end time
 	Timer.prototype.reset = function() {
 		window.clearInterval(this.intervalID);
+		this.running = false;
 		this.timeCurrent = this.timeStart;
+		// Update timer display
+		updateHMS(this.timerId, this.h, this.m, this.s);
 	}
 
 	// Update timer display
-	// TODO: implement this with a unique timer ID
-	function updateHMS(h, m, s){
-		var hTarget = document.querySelector(".clock .h");
-		var mTarget = document.querySelector(".clock .m");
-		var sTarget = document.querySelector(".clock .s");
+	function updateHMS(timerId, h, m, s){
+		var hTarget = document.querySelector("#timer-" + timerId + " .clock .h");
+		var mTarget = document.querySelector("#timer-" + timerId + " .clock .m");
+		var sTarget = document.querySelector("#timer-" + timerId + " .clock .s");
 
 		hTarget.innerHTML = padTime(h);
 		mTarget.innerHTML = padTime(m);

@@ -5,13 +5,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
   // On click event for create timer button
   var addMainTimerButton = document.getElementById("timer-main-add");
   addMainTimerButton.onclick = addMainTimer;
-
-  // Testing
-  var testTimer = new timerUtil.Timer("My timer",
-                                        40,
-                                        "A timer that I made");
-  buildAndShowTimerHTML(testTimer, 3, "#timer");
-  testTimer.start();
 })
 
 
@@ -49,6 +42,20 @@ function buildAndShowTimerHTML(timer, selector) {
       timerHTML = insertIntoSnippet(timerHTML, "timerDescription", timer.description);
 
       target.insertAdjacentHTML("beforeend", timerHTML);
+
+      // Add onclick events for Start/Pause/Reset buttons
+      var startButton = document.querySelector("#timer-" + timer.timerId + " .timer-start");
+      startButton.onclick = function(){
+                              timers[timer.timerId].start();
+                            }
+      var pauseButton = document.querySelector("#timer-" + timer.timerId + " .timer-pause");
+      pauseButton.onclick = function(){
+                              timers[timer.timerId].pause();
+                            }
+      var resetButton = document.querySelector("#timer-" + timer.timerId + " .timer-reset");
+      resetButton.onclick = function(){
+                              timers[timer.timerId].reset();
+                            }
     }
   };
 
@@ -80,6 +87,6 @@ function addMainTimer() {
   currentId++;
 
   // Add timer to page
-  buildAndShowTimerHTML(timer, timers.length, "#timer");
+  buildAndShowTimerHTML(timer, "#timer");
 
 }
