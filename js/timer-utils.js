@@ -19,9 +19,11 @@
 			},
 			onPause: function() {
 				// Pause child timers
+				self.pauseSubTimers(timer);
 			},
 			onReset: function() {
 				// Reset child timers
+				self.resetSubTimers(timer);
 			},
 			onTick: function() {
 
@@ -51,6 +53,18 @@
 			timer.subTimers.getFirst().start();
 		}
 	}
+	Controller.prototype.pauseSubTimers = function(timer) {
+		for (var i = 0; i < timer.subTimers.timers.length; i++) {
+			timer.subTimers.timers[i].pause();
+		}
+	}
+	Controller.prototype.resetSubTimers = function(timer) {
+		for (var i = 0; i < timer.subTimers.timers.length; i++) {
+			timer.subTimers.timers[i].reset();
+		}
+	}
+
+
 
 	// Given a list of listeners and a type, execute all callbacks of that type
 	function executeCallbacks(listeners, type) {
