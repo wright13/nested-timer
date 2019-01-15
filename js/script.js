@@ -93,6 +93,35 @@ function addTimer(selector, parent) {
                         repeat,
                         subTimers);
 
+  // UI listener
+  uiListener = {
+    onStart: function() {
+      // Disable start button
+    },
+    onComplete: function() {
+
+    },
+    onPause: function() {
+      // Enable start button
+
+      // Disable pause button
+    },
+    onReset: function() {
+      // Update timer display
+      updateHMS(timer.timerId, timer.h, timer.m, timer.s);
+      // Enable start button
+
+      // Disable reset button
+
+    },
+    onTick: function() {
+      // Update timer display
+      updateHMS(timer.timerId, timer.h, timer.m, timer.s);
+    }
+  };
+
+  timer.addListener(uiListener);
+
   // Add timer to timer list
   // TODO: make sure total times for child timers are less than the parent time
   if (parent) {
@@ -106,3 +135,14 @@ function addTimer(selector, parent) {
   buildAndShowTimerHTML(timer, selector);
 
 }
+
+// Update timer display
+function updateHMS(timerId, h, m, s){
+  var hTarget = document.querySelector("#timer-" + timerId + " .clock .h");
+  var mTarget = document.querySelector("#timer-" + timerId + " .clock .m");
+  var sTarget = document.querySelector("#timer-" + timerId + " .clock .s");
+
+  hTarget.innerHTML = timerUtil.padTime(h);
+  mTarget.innerHTML = timerUtil.padTime(m);
+  sTarget.innerHTML = timerUtil.padTime(s);
+};

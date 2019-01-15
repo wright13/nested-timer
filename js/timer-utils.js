@@ -130,8 +130,6 @@
 											self.pause();
 											executeCallbacks(self.listeners, "onComplete");
 										}
-										// Update timer display
-										updateHMS(self.timerId, self.h, self.m, self.s);
 									}, 1000);
 		}
 	}
@@ -149,8 +147,6 @@
 		this.running = false;
 		this.timeCurrent = this.timeStart;
 		executeCallbacks(this.listeners, "onReset");
-		// Update timer display
-		updateHMS(this.timerId, this.h, this.m, this.s);
 	};
 
 	// Add a listener
@@ -162,17 +158,6 @@
 	Timer.prototype.addSubTimer = function(timer) {
 		this.subTimers.addTimer(timer);
 	}
-
-	// Update timer display
-	function updateHMS(timerId, h, m, s){
-		var hTarget = document.querySelector("#timer-" + timerId + " .clock .h");
-		var mTarget = document.querySelector("#timer-" + timerId + " .clock .m");
-		var sTarget = document.querySelector("#timer-" + timerId + " .clock .s");
-
-		hTarget.innerHTML = padTime(h);
-		mTarget.innerHTML = padTime(m);
-		sTarget.innerHTML = padTime(s);
-	};
 
 	// Pads single digit hour, minute, or second values with a leading zero
 	function padTime(time) {
