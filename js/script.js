@@ -1,10 +1,12 @@
-var timers = {};
+var timers = new timerUtil.Controller();
 var currentId = 0;
 
 document.addEventListener("DOMContentLoaded", function (event) {
   // On click event for create timer button
   var addMainTimerButton = document.getElementById("timer-main-add");
-  addMainTimerButton.onclick = addMainTimer;
+  addMainTimerButton.onclick = function(){
+                                addTimer("#timer", null);
+                              }
 })
 
 
@@ -46,15 +48,20 @@ function buildAndShowTimerHTML(timer, selector) {
       // Add onclick events for Start/Pause/Reset buttons
       var startButton = document.querySelector("#timer-" + timer.timerId + " .timer-start");
       startButton.onclick = function(){
-                              timers[timer.timerId].start();
+                              timer.start();
                             }
       var pauseButton = document.querySelector("#timer-" + timer.timerId + " .timer-pause");
       pauseButton.onclick = function(){
-                              timers[timer.timerId].pause();
+                              timer.pause();
                             }
       var resetButton = document.querySelector("#timer-" + timer.timerId + " .timer-reset");
       resetButton.onclick = function(){
-                              timers[timer.timerId].reset();
+                              timer.reset();
+                            }
+
+      var addChildButton = document.querySelector("#timer-" + timer.timerId + " .timer-child-add");
+      addChildButton.onclick = function(){
+                              addTimer("#timer-" + timer.timerId + " .timer-child", timer);
                             }
     }
   };
@@ -63,7 +70,7 @@ function buildAndShowTimerHTML(timer, selector) {
   request.send(null); 
 }
 
-function addMainTimer() {
+function addTimer(selector, parent) {
   var h = document.querySelector("#timer-main-set .timer-h").value || 0;
   var m = document.querySelector("#timer-main-set .timer-m").value || 0;
   var s = document.querySelector("#timer-main-set .timer-s").value || 0;
@@ -87,10 +94,15 @@ function addMainTimer() {
                         subTimers);
 
   // Add timer to timer list
-  timers[currentId] = timer;
+  // TODO: make sure total times for child timers are less than the parent time
+  if (parent) {
+    parent.addSubTimer(timer);
+  } else {
+    timers.addTimer(timer);
+  }
   currentId++;
 
   // Add timer to page
-  buildAndShowTimerHTML(timer, "#timer");
+  buildAndShowTimerHTML(timer, selector);
 
 }
