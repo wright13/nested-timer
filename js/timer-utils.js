@@ -15,6 +15,7 @@
 				self.startSubTimer(timer);
 			},
 			onComplete: function() {
+				// Start next timer if it is set to auto-start
 				self.startNext(timer);
 			},
 			onPause: function() {
@@ -63,8 +64,6 @@
 			timer.subTimers.timers[i].reset();
 		}
 	}
-
-
 
 	// Given a list of listeners and a type, execute all callbacks of that type
 	function executeCallbacks(listeners, type) {
@@ -120,16 +119,19 @@
 		var self = this;
 		if (!this.running) {	// Don't start another interval if the timer is already running
 			executeCallbacks(this.listeners, "onStart");
+			this.timeCurrent--;
+			executeCallbacks(self.listeners, "onTick");
 			this.intervalID = window.setInterval(function() {
 										self.running = true;
 										// Decrement the timer's end time every second but don't let it go negative
 										if (self.timeCurrent >= 1) {
-											executeCallbacks(self.listeners, "onTick");
 											self.timeCurrent--;
+											executeCallbacks(self.listeners, "onTick");
 										} else {
 											self.pause();
 											executeCallbacks(self.listeners, "onComplete");
 										}
+										
 									}, 1000);
 		}
 	}
