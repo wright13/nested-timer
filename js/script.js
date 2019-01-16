@@ -2,11 +2,13 @@ var timers = new timerUtil.Controller();
 var currentId = 0;
 
 document.addEventListener("DOMContentLoaded", function (event) {
-  // On click event for create timer button
-  var addMainTimerButton = document.getElementById("timer-main-add");
-  addMainTimerButton.onclick = function(){
-                                addTimer("#timer", null);
-                              }
+  // When new timer form is shown, add onclick event handler for create timer button
+  $("#timer-new-form").on("shown.bs.dropdown", function(){
+    var addMainTimerButton = document.getElementById("timer-main-add");
+    addMainTimerButton.onclick = function(){
+                                  addTimer("#timer", null);
+                                }
+  })
 })
 
 
