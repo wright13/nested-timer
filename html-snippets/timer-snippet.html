@@ -1,18 +1,53 @@
-<div class="media" id="timer-{{timerId}}">
-    <div class="align-self-start mr-3 ml-1 clock">
-    	<span class="h">{{h}}</span>
-    	<span class="sep">:</span>
-    	<span class="m">{{m}}</span>
-    	<span class="sep">:</span>
-    	<span class="s">{{s}}</span>
-    </div>
-    <div class="media-body">
-      <h5>{{timerName}}</h5>
-      <p>{{timerDescription}}</p>
-      <button type="button" class="btn btn-outline-success timer-start">Start</button>
-      <button type="button" class="btn btn-outline-warning timer-pause">Pause</button>
-      <button type="button" class="btn btn-outline-danger timer-reset">Reset</button>
-      <button type="button" class="btn btn-outline-info timer-child-add">Add child</button>
-      <div class="timer-child"></div>
-    </div>
- </div>
+<div class="card" id="timer-{{timerId}}">
+	<!-- Header -->
+	<nav class="card-header">
+		<div class="timer-name float-left">
+			<h3>{{timerName}}</h3>
+		</div>
+		<div class="float-right timer-tools">
+			<button class="btn timer-child-add">
+				<span class="fas fa-plus" aria-hidden="true"></span>
+	  			<span class="sr-only">New sub-timer</span>
+			</button>
+			<button class="btn timer-child-add">
+				<span class="fas fa-pen" aria-hidden="true"></span>
+	  			<span class="sr-only">Edit timer</span>
+			</button>
+			<button class="btn timer-delete">
+				<span class="fas fa-trash" aria-hidden="true"></span>
+	  			<span class="sr-only">Delete timer</span>
+			</button>
+		</div>
+		
+	</nav> <!-- End header -->
+	<div class="card-body">
+		<div class="timer-description">
+			<p>{{timerDescription}}</p>
+		</div>
+		<div class="clock">
+			<span class="h">{{h}}</span>
+	    	<span class="sep">:</span>
+	    	<span class="m">{{m}}</span>
+	    	<span class="sep">:</span>
+	    	<span class="s">{{s}}</span>
+		</div>
+		<div class="timer-controls">
+			<button class="btn btn-outline-success timer-start">
+				<span class="fas fa-play" aria-hidden="true"></span>
+  				<span class="sr-only">Start</span>
+			</button>
+			<button class="btn btn-outline-warning timer-pause">
+				<span class="fas fa-pause" aria-hidden="true"></span>
+  				<span class="sr-only">Pause</span>
+			</button>
+			<button class="btn btn-outline-danger timer-reset">
+				<span class="fas fa-undo-alt" aria-hidden="true"></span>
+  				<span class="sr-only">Reset</span>
+			</button>
+		</div>
+		<div class="timer-child">
+			
+		</div>
+	</div>
+	
+</div>

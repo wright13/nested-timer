@@ -17,49 +17,52 @@
     <script src="js/timer-utils.js"></script>
     <script src="js/script.js"></script>
 
-    <!-- Fonts -->
-    
+    <!-- Fonts and Icons-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+
   </head>
 <body>
-  <h1>Nested Timer</h1>
+  <div class="container">
+    <h1>Nested Timer</h1>
   
-  <div class="dropdown" id="timer-new-form">
-    <!-- Add timer button -->
-    <button class="btn btn-secondary dropdown-toggle" type="button" id="timer-form-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">New timer</button>
-    <!-- Add timer form -->
-    <form class="dropdown-menu p-4" id="timer-main-set">
-      <div class="form-row">
-        <div class="col-auto">
-          <label for="timer-main-name">Timer name</label>
-          <input type="text" class="form-control" id="timer-main-name" placeholder="Timer name">
-        </div>
-        <div class="col-auto">
-          <label for="timer-main-description">Description (optional)</label>
-          <input type="text" class="form-control" id="timer-main-description" placeholder="Short description (optional)">
-        </div>
-      </div>
-      <div class="form-row">
+    <div class="dropdown" id="timer-new-form">
+      <!-- Add timer button -->
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="timer-form-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">New timer</button>
+      <!-- Add timer form -->
+      <form class="dropdown-menu p-4" id="timer-main-set">
         <div class="form-row">
           <div class="col-auto">
-            <input type="number" class="form-control timer-h" placeholder="hh">
+            <label for="timer-main-name">Timer name</label>
+            <input type="text" class="form-control" id="timer-main-name" placeholder="Timer name">
           </div>
-          <span class="sep">:</span>
           <div class="col-auto">
-            <input type="number" class="form-control timer-m" placeholder="mm">
-          </div>
-          <span class="sep">:</span>
-          <div class="col-auto">
-            <input type="number" class="form-control timer-s" placeholder="ss">
+            <label for="timer-main-description">Description (optional)</label>
+            <input type="text" class="form-control" id="timer-main-description" placeholder="Short description (optional)">
           </div>
         </div>
-        <button type="button" class="btn btn-outline-primary" id="timer-main-add">Create Timer</button>
-      </div>
-    </form> <!-- End timer form -->
-  </div>
-  
+        <div class="form-row">
+          <div class="form-row">
+            <div class="col-auto">
+              <input type="number" class="form-control timer-h" placeholder="hh">
+            </div>
+            <span class="sep">:</span>
+            <div class="col-auto">
+              <input type="number" class="form-control timer-m" placeholder="mm">
+            </div>
+            <span class="sep">:</span>
+            <div class="col-auto">
+              <input type="number" class="form-control timer-s" placeholder="ss">
+            </div>
+          </div>
+          <button type="button" class="btn btn-outline-primary" id="timer-main-add">Create Timer</button>
+        </div>
+      </form> <!-- End timer form -->
+    </div>
+    
 
-  <div id="timer">
-    <!-- Timers go here -->
+    <div id="timer">
+      <!-- Timers go here -->
+    </div>
   </div>
 
 </body>
