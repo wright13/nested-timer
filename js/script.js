@@ -6,10 +6,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
   $("#timer-new-form").on("shown.bs.dropdown", function(){
     var addMainTimerButton = document.getElementById("timer-main-add");
     addMainTimerButton.onclick = function(){
-                                  addTimer("#timer", null);
-                                }
-  })
-})
+      addTimer("#timer", null);
+    };
+  });
+});
 
 
 // Snippet URLs
@@ -22,7 +22,7 @@ function insertIntoSnippet(snippet, property, value) {
   var newSnippet = snippet;
   newSnippet = newSnippet.replace(new RegExp(propertyToReplace, "g"), value);
   return newSnippet;
-};
+}
 
 // Fill in the properties of a timer HTML snippet and insert it into the element
 // identified by selector
@@ -50,21 +50,20 @@ function buildAndShowTimerHTML(timer, selector) {
       // Add onclick events for Start/Pause/Reset buttons
       var startButton = document.querySelector("#timer-" + timer.timerId + " .timer-start");
       startButton.onclick = function(){
-                              timer.start();
-                            }
+        timer.start();
+      };
       var pauseButton = document.querySelector("#timer-" + timer.timerId + " .timer-pause");
       pauseButton.onclick = function(){
-                              timer.pause();
-                            }
+        timer.pause();
+      };
       var resetButton = document.querySelector("#timer-" + timer.timerId + " .timer-reset");
       resetButton.onclick = function(){
-                              timer.reset();
-                            }
-
+        timer.reset();
+      };
       var addChildButton = document.querySelector("#timer-" + timer.timerId + " .timer-child-add");
       addChildButton.onclick = function(){
-                              addTimer("#timer-" + timer.timerId + " .timer-child", timer);
-                            }
+        addTimer("#timer-" + timer.timerId + " .timer-child", timer);
+      };
     }
   };
 

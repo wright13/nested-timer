@@ -33,7 +33,7 @@
 	};
 	Controller.prototype.getFirst = function() {
 		return this.timers[0];
-	}
+	};
 	Controller.prototype.startNext = function(timer) {
 		// Start next timer if it is set to auto-start
 		var next = false;
@@ -53,17 +53,17 @@
 		if (timer.subTimers.getFirst().autoStart) {
 			timer.subTimers.getFirst().start();
 		}
-	}
+	};
 	Controller.prototype.pauseSubTimers = function(timer) {
 		for (var i = 0; i < timer.subTimers.timers.length; i++) {
 			timer.subTimers.timers[i].pause();
 		}
-	}
+	};
 	Controller.prototype.resetSubTimers = function(timer) {
 		for (var i = 0; i < timer.subTimers.timers.length; i++) {
 			timer.subTimers.timers[i].reset();
 		}
-	}
+	};
 
 	// Given a list of listeners and a type, execute all callbacks of that type
 	function executeCallbacks(listeners, type) {
@@ -89,7 +89,7 @@
 		this.subTimers = new Controller();	// Controller for subTimers
 		this.running = false;	// Keep track of whether timer is currently running
 		this.listeners = [];
-	};
+	}
 
 	// Getters for current time in h, m, and s
 	var t = Timer.prototype;
@@ -134,7 +134,7 @@
 										
 									}, 1000);
 		}
-	}
+	};
 
 	// Pause the timer but don't reset the end time
 	Timer.prototype.pause = function() {
@@ -168,7 +168,7 @@
 			textTime = "0" + textTime;
 		}
 		return textTime;
-	};
+	}
 
 	timerUtil.Timer = Timer;
 	timerUtil.padTime = padTime;
