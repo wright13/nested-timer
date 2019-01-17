@@ -60,8 +60,10 @@
 		}
 	};
 	Controller.prototype.startSubTimer = function(timer) {
-		if (timer.subTimers.getFirst().autoStart) {
-			timer.subTimers.getFirst().start();
+		if (timer.subTimers.count() > 0) {
+			if (timer.subTimers.getFirst().autoStart) {
+				timer.subTimers.getFirst().start();
+			}
 		}
 	};
 	Controller.prototype.pauseSubTimers = function(timer) {
