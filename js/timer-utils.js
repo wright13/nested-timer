@@ -6,6 +6,9 @@
 	function Controller() {
 		this.timers = [];
 	}
+	Controller.prototype.count = function() {
+		return this.timers.length;
+	}
 	Controller.prototype.addTimer = function(timer) {
 		var self = this;
 		this.timers.push(timer);
@@ -32,7 +35,7 @@
 		});
 	};
 	Controller.prototype.deleteTimer = function(timer) {
-		for (let i = 0; i < this.timers.length; i++) {
+		for (let i = 0; i < this.count(); i++) {
 			if (this.timers[i] === timer) {
 				this.timers.splice(i, 1);
 			}
@@ -44,7 +47,7 @@
 	Controller.prototype.startNext = function(timer) {
 		// Start next timer if it is set to auto-start
 		var next = false;
-		for (let i = 0; i < this.timers.length; i++) {
+		for (let i = 0; i < this.count(); i++) {
 			if (next === true) {
 				if (this.timers[i].autoStart === true) {
 					this.timers[i].start();
@@ -62,12 +65,12 @@
 		}
 	};
 	Controller.prototype.pauseSubTimers = function(timer) {
-		for (var i = 0; i < timer.subTimers.timers.length; i++) {
+		for (var i = 0; i < timer.subTimers.count(); i++) {
 			timer.subTimers.timers[i].pause();
 		}
 	};
 	Controller.prototype.resetSubTimers = function(timer) {
-		for (var i = 0; i < timer.subTimers.timers.length; i++) {
+		for (var i = 0; i < timer.subTimers.count(); i++) {
 			timer.subTimers.timers[i].reset();
 		}
 	};
