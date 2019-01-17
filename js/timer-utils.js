@@ -31,6 +31,13 @@
 			}
 		});
 	};
+	Controller.prototype.deleteTimer = function(timer) {
+		for (let i = 0; i < this.timers.length; i++) {
+			if (this.timers[i] === timer) {
+				this.timers.splice(i, 1);
+			}
+		}
+	};
 	Controller.prototype.getFirst = function() {
 		return this.timers[0];
 	};

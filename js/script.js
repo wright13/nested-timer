@@ -11,7 +11,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
   });
 });
 
-
 // Snippet URLs
 var timerURL = "html-snippets/timer-snippet.html";
 
@@ -47,7 +46,7 @@ function buildAndShowTimerHTML(timer, selector) {
 
       target.insertAdjacentHTML("beforeend", timerHTML);
 
-      // Add onclick events for Start/Pause/Reset buttons
+      // Add onclick event handlers for Start/Pause/Reset/Add Child/Delete buttons
       var startButton = document.querySelector("#timer-" + timer.timerId + " .timer-start");
       startButton.onclick = function(){
         timer.start();
@@ -64,6 +63,12 @@ function buildAndShowTimerHTML(timer, selector) {
       addChildButton.onclick = function(){
         addTimer("#timer-" + timer.timerId + " .timer-child", timer);
       };
+      var deleteButton = document.querySelector("#timer-" + timer.timerId + " .timer-delete");
+      deleteButton.onclick = function() {
+        var timerToDelete = document.querySelector("#timer-" + timer.timerId);
+        timerToDelete.parentNode.removeChild(timerToDelete);
+        timers.deleteTimer(timer);
+      };                          
     }
   };
 
