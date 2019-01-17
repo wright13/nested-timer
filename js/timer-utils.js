@@ -129,7 +129,8 @@
 	// Start the timer
 	Timer.prototype.start = function() {
 		var self = this;
-		if (!this.running) {	// Don't start another interval if the timer is already running
+		// Don't start another interval if the timer is already running or if the timer is at 0
+		if (!this.running && this.timeCurrent > 0) {
 			executeCallbacks(this.listeners, "onStart");
 			this.timeCurrent--;
 			executeCallbacks(self.listeners, "onTick");
