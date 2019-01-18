@@ -81,6 +81,30 @@ function buildAndShowTimerHTML(timer, selector) {
   request.send(null); 
 }
 
+function resetModal() {
+  // Clear form
+  document.getElementById("timer-new-form").reset();
+  setAutoStart(false);
+}
+
+function setAutoStart(isOn) {
+  if (isOn) {
+    document.getElementById("timer-autostart-on").checked = true;
+    document.getElementById("timer-autostart-on-label").classList.add("active");
+    document.getElementById("timer-autostart-on").setAttribute("aria-pressed", true);
+    document.getElementById("timer-autostart-off").checked = false;
+    document.getElementById("timer-autostart-off-label").classList.remove("active");
+    document.getElementById("timer-autostart-off").setAttribute("aria-pressed", false);
+  } else {
+    document.getElementById("timer-autostart-on").checked = false;
+    document.getElementById("timer-autostart-on-label").classList.remove("active");
+    document.getElementById("timer-autostart-on").setAttribute("aria-pressed", false);
+    document.getElementById("timer-autostart-off").checked = true;
+    document.getElementById("timer-autostart-off-label").classList.add("active");
+    document.getElementById("timer-autostart-off").setAttribute("aria-pressed", true);
+  }
+}
+
 function addTimer(selector, parent) {
   var h = document.querySelector("#timer-h").value || 0;
   var m = document.querySelector("#timer-m").value || 0;
@@ -92,7 +116,7 @@ function addTimer(selector, parent) {
   var repeat = document.querySelector("#timer-repeat").value || 1;
   var subTimers = {};
   // Clear form
-  document.getElementById("timer-new-form").reset();
+  resetModal();
 
   // Create new timer object from values provided in the form
   var timer = new timerUtil.Timer(currentId,
