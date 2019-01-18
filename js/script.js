@@ -40,6 +40,7 @@ function buildAndShowTimerHTML(timer, selector) {
       timerHTML = insertIntoSnippet(timerHTML, "s", seconds);
       timerHTML = insertIntoSnippet(timerHTML, "timerName", timer.name);
       timerHTML = insertIntoSnippet(timerHTML, "timerDescription", timer.description);
+      timerHTML = insertIntoSnippet(timerHTML, "autoStart", timer.autoStart ? "On" : "Off");
 
       target.insertAdjacentHTML("beforeend", timerHTML);
 
@@ -82,7 +83,7 @@ function addTimer(selector, parent) {
   var name = document.querySelector("#timer-name").value || "Timer";
   var description = document.querySelector("#timer-description").value || "";
   // TODO: set these through the create timer form
-  var autoStart = true;
+  var autoStart = document.getElementById("timer-autostart-on").checked;
   var repeat = 1;
   var subTimers = {};
 
