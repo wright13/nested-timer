@@ -35,6 +35,11 @@
 		});
 	};
 	Controller.prototype.deleteTimer = function(timer) {
+		if (timer.parent) {
+			var parentTimer = timer.parent;
+			timer.parent = null;
+			parentTimer.subTimers.deleteTimer(timer);
+		}
 		for (let i = 0; i < this.count(); i++) {
 			if (this.timers[i] === timer) {
 				this.timers.splice(i, 1);
@@ -111,6 +116,7 @@
 		this.subTimers = new Controller();	// Controller for subTimers
 		this.running = false;	// Keep track of whether timer is currently running
 		this.listeners = [];
+		this.parent = null;
 	}
 
 	// Getters for current time in h, m, and s
@@ -183,6 +189,7 @@
 
 	// Add subtimers
 	Timer.prototype.addSubTimer = function(timer) {
+		timer.parent = this;
 		this.subTimers.addTimer(timer);
 	}
 
