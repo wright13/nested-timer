@@ -2,10 +2,14 @@ var timers = new timerUtil.Controller();
 var currentId = 0;
 
 document.addEventListener("DOMContentLoaded", function (event) {
-  // When new timer form is shown, add onclick event handler for create timer button
-  $("#timer-new-modal").on("shown.bs.modal", function(){
-    timerCreateHandler("#timer", null);
-  });
+  // When new timer button is clicked and after form is shown, add onclick event handler for create timer button
+  var addMainTimerButton = document.getElementById("timer-main-add");
+  addMainTimerButton.onclick = function() {
+    $("#timer-new-modal").on("shown.bs.modal", function(){
+      timerCreateButtonHandler("#timer", null);
+    });
+  }
+  
 });
 
 // Snippet URLs
@@ -61,7 +65,7 @@ function buildAndShowTimerHTML(timer, selector) {
       var addChildButton = document.querySelector("#timer-" + timer.timerId + " .timer-child-add");
       addChildButton.onclick = function(){
         $("#timer-new-modal").on("shown.bs.modal", function(){
-          timerCreateHandler("#timer-" + timer.timerId + " .timer-child", timer);
+          timerCreateButtonHandler("#timer-" + timer.timerId + " .timer-child", timer);
         });
       };
       var deleteButton = document.querySelector("#timer-" + timer.timerId + " .timer-delete");
@@ -158,7 +162,8 @@ function updateHMS(timer){
   
 };
 
-function timerCreateHandler(timerParentElement, timer) {
+// Add on click event handlers to timer create buttons
+function timerCreateButtonHandler(timerParentElement, timer) {
   var createAndCloseButton = document.getElementById("timer-create-close");
   var createButton = document.getElementById("timer-create");
 
