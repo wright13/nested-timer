@@ -3,11 +3,8 @@ var currentId = 0;
 
 document.addEventListener("DOMContentLoaded", function (event) {
   // When new timer form is shown, add onclick event handler for create timer button
-  $("#timer-new-form").on("shown.bs.dropdown", function(){
-    var addMainTimerButton = document.getElementById("timer-main-add");
-    addMainTimerButton.onclick = function(){
-      addTimer("#timer", null);
-    };
+  $("#timer-new-modal").on("shown.bs.modal", function(){
+    timerCreateHandler("#timer", null);
   });
 });
 
@@ -61,7 +58,9 @@ function buildAndShowTimerHTML(timer, selector) {
       };
       var addChildButton = document.querySelector("#timer-" + timer.timerId + " .timer-child-add");
       addChildButton.onclick = function(){
-        addTimer("#timer-" + timer.timerId + " .timer-child", timer);
+        $("#timer-new-modal").on("shown.bs.modal", function(){
+          timerCreateHandler("#timer-" + timer.timerId + " .timer-child", timer);
+        });
       };
       var deleteButton = document.querySelector("#timer-" + timer.timerId + " .timer-delete");
       deleteButton.onclick = function() {
@@ -77,18 +76,18 @@ function buildAndShowTimerHTML(timer, selector) {
 }
 
 function addTimer(selector, parent) {
-  var h = document.querySelector("#timer-main-set .timer-h").value || 0;
-  var m = document.querySelector("#timer-main-set .timer-m").value || 0;
-  var s = document.querySelector("#timer-main-set .timer-s").value || 0;
-  var name = document.querySelector("#timer-main-name").value || "Timer";
-  var description = document.querySelector("#timer-main-description").value || "";
+  var h = document.querySelector("#timer-h").value || 0;
+  var m = document.querySelector("#timer-m").value || 0;
+  var s = document.querySelector("#timer-s").value || 0;
+  var name = document.querySelector("#timer-name").value || "Timer";
+  var description = document.querySelector("#timer-description").value || "";
   // TODO: set these through the create timer form
   var autoStart = true;
   var repeat = 1;
   var subTimers = {};
 
   // Clear form
-  document.getElementById("timer-main-set").reset();
+  document.getElementById("timer-new-form").reset();
 
   // Create new timer object from values provided in the form
   var timer = new timerUtil.Timer(currentId,
@@ -152,3 +151,15 @@ function updateHMS(timerId, h, m, s){
   mTarget.innerHTML = timerUtil.padTime(m);
   sTarget.innerHTML = timerUtil.padTime(s);
 };
+
+function timerCreateHandler(timerParentElement, timer) {
+  var createAndCloseButton = document.getElementById("timer-create-close");
+  var createButton = document.getElementById("timer-create");
+
+  createAndCloseButton.onclick = function(){
+    addTimer(timerParentElement, timer);
+  };
+  createButton.onclick = function(){
+    addTimer(timerParentElement, timer);
+  };
+}
