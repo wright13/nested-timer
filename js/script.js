@@ -5,8 +5,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
   // When new timer button is clicked and after form is shown, add onclick event handler for create timer button
   var addMainTimerButton = document.getElementById("timer-main-add");
   addMainTimerButton.onclick = function() {
-    $("#timer-new-modal").on("shown.bs.modal", function(){
-      timerCreateButtonHandler("#timer", null);
+    $("#timer-new-modal").off("show.bs.modal");
+    $("#timer-new-modal").on("show.bs.modal", function(){
+      modalSetup("#timer", null, false);
     });
   }
   
@@ -64,8 +65,9 @@ function buildAndShowTimerHTML(timer, selector) {
       };
       var addChildButton = document.querySelector("#timer-" + timer.timerId + " .timer-child-add");
       addChildButton.onclick = function(){
-        $("#timer-new-modal").on("shown.bs.modal", function(){
-          timerCreateButtonHandler("#timer-" + timer.timerId + " .timer-child", timer);
+        $("#timer-new-modal").off("show.bs.modal");
+        $("#timer-new-modal").on("show.bs.modal", function(){
+          modalSetup("#timer-" + timer.timerId + " .timer-child", timer, false);
         });
       };
       var deleteButton = document.querySelector("#timer-" + timer.timerId + " .timer-delete");
@@ -73,7 +75,14 @@ function buildAndShowTimerHTML(timer, selector) {
         var timerToDelete = document.querySelector("#timer-" + timer.timerId);
         timerToDelete.parentNode.removeChild(timerToDelete);
         timers.deleteTimer(timer);
-      };                          
+      };
+      var editButton = document.querySelector("#timer-" + timer.timerId + " .timer-edit");
+      editButton.onclick = function() {
+        $("#timer-new-modal").off("show.bs.modal");
+        $("#timer-new-modal").on("show.bs.modal", function() {
+          modalSetup("", timer, true);
+        })
+      }                         
     }
   };
 
@@ -170,8 +179,8 @@ function addTimer(selector, parent) {
 
 }
 
-// Update timer display
-function updateHMS(timer){
+// Update the parts of the timer display that change when the timer counts down
+function updateHMS(timer) {
   var hTarget = document.querySelector("#timer-" + timer.timerId + " .clock .h");
   var mTarget = document.querySelector("#timer-" + timer.timerId + " .clock .m");
   var sTarget = document.querySelector("#timer-" + timer.timerId + " .clock .s");
@@ -183,18 +192,81 @@ function updateHMS(timer){
   if (timer.nRepeat > 1) {
     repeatTarget.innerHTML = timer.repeatsLeft + " times";
   }
-  
 };
+// Update the parts of the timer display that only change when timer is edited
+function updateEdited(timer) {
+  var titleTarget = document.querySelector("#timer-" + timer.timerId + " .timer-name h3");
+  var descriptionTarget = document.querySelector("#timer-" + timer.timerId + " .timer-description p");
+  var autostartTarget = document.querySelector("#timer-" + timer.timerId + " .autostart-indicator");
 
-// Add on click event handlers to timer create buttons
-function timerCreateButtonHandler(timerParentElement, timer) {
-  var createAndCloseButton = document.getElementById("timer-create-close");
-  var createButton = document.getElementById("timer-create");
+  titleTarget.innerHTML = timer.name;
+  descriptionTarget.innerHTML = timer.description;
+  autostartTarget.innerHTML = timer.autoStart ? "On" : "Off";
+}
 
-  createAndCloseButton.onclick = function(){
-    addTimer(timerParentElement, timer);
-  };
-  createButton.onclick = function(){
-    addTimer(timerParentElement, timer);
-  };
+// Set up timer create/edit modal
+function modalSetup(timerParentElement, timer, edit) {
+  var editButtons = '<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>' +
+            '<button type="button" class="btn btn-primary" data-dismiss="modal" id="timer-save-close">Save & Close</button>';
+  var createButtons = '<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>' +
+            '<button type="button" class="btn btn-primary" id="timer-create">Create</button>' +
+            '<button type="button" class="btn btn-primary" data-dismiss="modal" id="timer-create-close">Create & Close</button>';
+  var nameInput = document.getElementById("timer-name");
+  var descriptionInput = document.getElementById("timer-description");
+  var hInput = document.getElementById("timer-h");
+  var mInput = document.getElementById("timer-m");
+  var sInput = document.getElementById("timer-s");
+  var autoStartInput = document.getElementById("timer-autostart-on");
+  var autoStartInputLabel = document.getElementById("timer-autostart-on-label");
+  var repeatInput = document.getElementById("timer-repeat");
+
+  // Edit mode
+  if (edit) {
+    // Set modal title to indicate edit mode
+    document.getElementById("timer-modal-title").innerHTML = "Edit existing timer";
+    // Populate inputs from the properties of timer
+    nameInput.value = timer.name;
+    descriptionInput.value = timer.description;
+    // TODO: change timer properties to just store hms
+    hInput.value = timer.hStart;
+    mInput.value = timer.mStart;
+    sInput.value = timer.sStart;
+    setAutoStart(timer.autoStart);
+    repeatInput.value = timer.nRepeat;
+    // Insert a save & close button
+    document.querySelector("#timer-new-modal .modal-footer").innerHTML = editButtons;
+    var saveAndCloseButton = document.getElementById("timer-save-close");
+    saveAndCloseButton.onclick = function() {
+      // Update timer properties
+      timer.name = nameInput.value || "Timer";
+      timer.description = descriptionInput.value || "";
+      timer.hStart = hInput.value || 0;
+      timer.mStart = mInput.value || 0;
+      timer.sStart = sInput.value || 0;
+      timer.autoStartInput = autoStartInput.checked;
+      timer.nRepeat = repeatInput.value || 1;
+      // Reset timer and update timer HTML with new properties
+      timer.reset();
+      updateEdited(timer);
+      // Clear inputs
+      resetModal();
+    }
+  } else {
+  // Create mode
+    // Set modal title to indicate create mode
+    document.getElementById("timer-modal-title").innerHTML = "Create new timer";
+
+    // Insert create button and create & close button
+    document.querySelector("#timer-new-modal .modal-footer").innerHTML = createButtons;
+    var createAndCloseButton = document.getElementById("timer-create-close");
+    var createButton = document.getElementById("timer-create");
+
+    createAndCloseButton.onclick = function() {
+      addTimer(timerParentElement, timer, false);
+    };
+    createButton.onclick = function() {
+      addTimer(timerParentElement, timer, false);
+    };
+  }
+
 }
