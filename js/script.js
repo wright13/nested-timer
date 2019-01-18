@@ -114,7 +114,7 @@ function addTimer(selector, parent) {
     },
     onReset: function() {
       // Update timer display
-      updateHMS(timer.timerId, timer.h, timer.m, timer.s);
+      updateHMS(timer);
       // Enable start button
 
       // Disable reset button
@@ -122,7 +122,7 @@ function addTimer(selector, parent) {
     },
     onTick: function() {
       // Update timer display
-      updateHMS(timer.timerId, timer.h, timer.m, timer.s);
+      updateHMS(timer);
     }
   };
 
@@ -143,14 +143,15 @@ function addTimer(selector, parent) {
 }
 
 // Update timer display
-function updateHMS(timerId, h, m, s){
-  var hTarget = document.querySelector("#timer-" + timerId + " .clock .h");
-  var mTarget = document.querySelector("#timer-" + timerId + " .clock .m");
-  var sTarget = document.querySelector("#timer-" + timerId + " .clock .s");
+function updateHMS(timer){
+  var hTarget = document.querySelector("#timer-" + timer.timerId + " .clock .h");
+  var mTarget = document.querySelector("#timer-" + timer.timerId + " .clock .m");
+  var sTarget = document.querySelector("#timer-" + timer.timerId + " .clock .s");
 
-  hTarget.innerHTML = timerUtil.padTime(h);
-  mTarget.innerHTML = timerUtil.padTime(m);
-  sTarget.innerHTML = timerUtil.padTime(s);
+  hTarget.innerHTML = timerUtil.padTime(timer.h);
+  mTarget.innerHTML = timerUtil.padTime(timer.m);
+  sTarget.innerHTML = timerUtil.padTime(timer.s);
+  
 };
 
 function timerCreateHandler(timerParentElement, timer) {
