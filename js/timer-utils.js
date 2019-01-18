@@ -45,19 +45,28 @@
 		return this.timers[0];
 	};
 	Controller.prototype.startNext = function(timer) {
-		// Start next timer if it is set to auto-start
-		var next = false;
-		for (let i = 0; i < this.count(); i++) {
-			if (next === true) {
-				if (this.timers[i].autoStart === true) {
-					this.timers[i].start();
+		// If the current timer is set to repeat, do that instead of starting the next timer in the list
+		if (timer.repeatsLeft > 0) {
+			let repeatsLeft = timer.repeatsLeft;
+			timer.reset();
+			timer.repeatsLeft = repeatsLeft;
+			timer.start();
+		} else {
+			// Start next timer if it is set to auto-start
+			var next = false;
+			for (let i = 0; i < this.count(); i++) {
+				if (next === true) {
+					if (this.timers[i].autoStart === true) {
+						this.timers[i].start();
+					}
+					return;
 				}
-				return;
-			}
-			if (this.timers[i] === timer) {
-				next = true;
+				if (this.timers[i] === timer) {
+					next = true;
+				}
 			}
 		}
+		
 	};
 	Controller.prototype.startSubTimer = function(timer) {
 		if (timer.subTimers.count() > 0) {
@@ -98,6 +107,7 @@
 		this.timeCurrent = time;	// Keeps track of where the timer ended (integer seconds)
 		this.autoStart = autoStart;	// Whether the timer should auto-start at end of previous timer (boolean)
 		this.nRepeat = repeat;	// Number of times the timer should repeat (integer)
+		this.repeatsLeft = repeat;	// Number of repeats still remaining
 		this.subTimers = new Controller();	// Controller for subTimers
 		this.running = false;	// Keep track of whether timer is currently running
 		this.listeners = [];
@@ -131,6 +141,7 @@
 		var self = this;
 		// Don't start another interval if the timer is already running or if the timer is at 0
 		if (!this.running && this.timeCurrent > 0) {
+			this.repeatsLeft--;
 			executeCallbacks(this.listeners, "onStart");
 			this.timeCurrent--;
 			executeCallbacks(self.listeners, "onTick");
@@ -161,6 +172,7 @@
 		window.clearInterval(this.intervalID);
 		this.running = false;
 		this.timeCurrent = this.timeStart;
+		this.repeatsLeft = this.nRepeat;
 		executeCallbacks(this.listeners, "onReset");
 	};
 

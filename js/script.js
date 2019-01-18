@@ -41,6 +41,7 @@ function buildAndShowTimerHTML(timer, selector) {
       timerHTML = insertIntoSnippet(timerHTML, "timerName", timer.name);
       timerHTML = insertIntoSnippet(timerHTML, "timerDescription", timer.description);
       timerHTML = insertIntoSnippet(timerHTML, "autoStart", timer.autoStart ? "On" : "Off");
+      timerHTML = insertIntoSnippet(timerHTML, "repeat", (timer.nRepeat > 1) ? timer.nRepeat + " times" : "Off");
 
       target.insertAdjacentHTML("beforeend", timerHTML);
 
@@ -84,9 +85,8 @@ function addTimer(selector, parent) {
   var description = document.querySelector("#timer-description").value || "";
   // TODO: set these through the create timer form
   var autoStart = document.getElementById("timer-autostart-on").checked;
-  var repeat = 1;
+  var repeat = document.querySelector("#timer-repeat").value || 1;
   var subTimers = {};
-
   // Clear form
   document.getElementById("timer-new-form").reset();
 
@@ -147,10 +147,14 @@ function updateHMS(timer){
   var hTarget = document.querySelector("#timer-" + timer.timerId + " .clock .h");
   var mTarget = document.querySelector("#timer-" + timer.timerId + " .clock .m");
   var sTarget = document.querySelector("#timer-" + timer.timerId + " .clock .s");
+  var repeatTarget = document.querySelector("#timer-" + timer.timerId + " .repeat-indicator");
 
   hTarget.innerHTML = timerUtil.padTime(timer.h);
   mTarget.innerHTML = timerUtil.padTime(timer.m);
   sTarget.innerHTML = timerUtil.padTime(timer.s);
+  if (timer.nRepeat > 1) {
+    repeatTarget.innerHTML = timer.repeatsLeft + " times";
+  }
   
 };
 
