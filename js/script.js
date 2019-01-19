@@ -127,7 +127,9 @@ function addTimer(parent) {
   // Create new timer object from values provided in the form
   var timer = new timerUtil.Timer(currentId,
                         name,
-                        (3600 * h) + (60 * m) + (1*s),
+                        h,
+                        m,
+                        s,
                         description,
                         autoStart,
                         repeat);

@@ -104,12 +104,14 @@
 	}
 
 	// Timer object constructor
-	function Timer(id, name, time, description, autoStart, repeat) {
+	function Timer(id, name, h, m, s, description, autoStart, repeat) {
 		this.timerId = id;	// Unique ID for this timer object
 		this.name = name;		// Friendly name/label for the timer
-		this.timeStart = time;	// Time that the timer is originally set to (integer seconds)
+		this.hStart = h;	// Number of hours the timer is set for
+		this.mStart = m;	// Number of minutes the timer is set for
+		this.sStart = s;	// Number of seconds the timer is set for
 		this.description = description;	//Description of what the timer is for (string)
-		this.timeCurrent = time;	// Keeps track of where the timer ended (integer seconds)
+		this.timeCurrent = (3600 * this.hStart) + (60 * this.mStart) + (1*this.sStart);	// Keeps track of where the timer ended (integer seconds)
 		this.autoStart = autoStart;	// Whether the timer should auto-start at end of previous timer (boolean)
 		this.nRepeat = repeat;	// Number of times the timer should repeat (integer)
 		this.repeatsLeft = repeat;	// Number of repeats still remaining
@@ -177,7 +179,7 @@
 	Timer.prototype.reset = function() {
 		window.clearInterval(this.intervalID);
 		this.running = false;
-		this.timeCurrent = this.timeStart;
+		this.timeCurrent = (3600 * this.hStart) + (60 * this.mStart) + (1*this.sStart);
 		this.repeatsLeft = this.nRepeat;
 		executeCallbacks(this.listeners, "onReset");
 	};
