@@ -120,10 +120,8 @@ function addTimer(selector, parent) {
   var s = document.querySelector("#timer-s").value || 0;
   var name = document.querySelector("#timer-name").value || "Timer";
   var description = document.querySelector("#timer-description").value || "";
-  // TODO: set these through the create timer form
   var autoStart = document.getElementById("timer-autostart-on").checked;
   var repeat = document.querySelector("#timer-repeat").value || 1;
-  var subTimers = {};
 
   // Create new timer object from values provided in the form
   var timer = new timerUtil.Timer(currentId,
@@ -131,8 +129,7 @@ function addTimer(selector, parent) {
                         (3600 * h) + (60 * m) + (1*s),
                         description,
                         autoStart,
-                        repeat,
-                        subTimers);
+                        repeat);
 
   // UI listener
   uiListener = {
