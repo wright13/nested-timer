@@ -124,8 +124,6 @@ function addTimer(selector, parent) {
   var autoStart = document.getElementById("timer-autostart-on").checked;
   var repeat = document.querySelector("#timer-repeat").value || 1;
   var subTimers = {};
-  // Clear form
-  resetModal();
 
   // Create new timer object from values provided in the form
   var timer = new timerUtil.Timer(currentId,
@@ -263,9 +261,13 @@ function modalSetup(timerParentElement, timer, edit) {
 
     createAndCloseButton.onclick = function() {
       addTimer(timerParentElement, timer, false);
+      // Clear form
+      resetModal();
     };
     createButton.onclick = function() {
       addTimer(timerParentElement, timer, false);
+      // Clear form
+      resetModal();
     };
   }
 
