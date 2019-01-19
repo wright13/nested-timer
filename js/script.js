@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
   addMainTimerButton.onclick = function() {
     $("#timer-new-modal").off("show.bs.modal");
     $("#timer-new-modal").on("show.bs.modal", function(){
-      modalSetup("#timer", null, false);
+      modalSetup(null, false);
     });
   }
   
@@ -27,10 +27,11 @@ function insertIntoSnippet(snippet, property, value) {
 
 // Fill in the properties of a timer HTML snippet and insert it into the element
 // identified by selector
-function buildAndShowTimerHTML(timer, selector) {
+function buildAndShowTimerHTML(timer) {
   var hours = timerUtil.padTime(timer.h);
   var minutes = timerUtil.padTime(timer.m);
   var seconds = timerUtil.padTime(timer.s);
+  var selector = timer.parent ? "#timer-" + timer.parent.timerId + " .timer-child" : "#timer";
   var target = document.querySelector(selector);
   var request = new XMLHttpRequest();
 
@@ -67,7 +68,7 @@ function buildAndShowTimerHTML(timer, selector) {
       addChildButton.onclick = function(){
         $("#timer-new-modal").off("show.bs.modal");
         $("#timer-new-modal").on("show.bs.modal", function(){
-          modalSetup("#timer-" + timer.timerId + " .timer-child", timer, false);
+          modalSetup(timer, false);
         });
       };
       var deleteButton = document.querySelector("#timer-" + timer.timerId + " .timer-delete");
@@ -80,7 +81,7 @@ function buildAndShowTimerHTML(timer, selector) {
       editButton.onclick = function() {
         $("#timer-new-modal").off("show.bs.modal");
         $("#timer-new-modal").on("show.bs.modal", function() {
-          modalSetup("", timer, true);
+          modalSetup(timer, true);
         })
       }                         
     }
@@ -114,7 +115,7 @@ function setAutoStart(isOn) {
   }
 }
 
-function addTimer(selector, parent) {
+function addTimer(parent) {
   var h = document.querySelector("#timer-h").value || 0;
   var m = document.querySelector("#timer-m").value || 0;
   var s = document.querySelector("#timer-s").value || 0;
@@ -170,7 +171,7 @@ function addTimer(selector, parent) {
   currentId++;
 
   // Add timer to page
-  buildAndShowTimerHTML(timer, selector);
+  buildAndShowTimerHTML(timer);
 
 }
 
@@ -200,7 +201,7 @@ function updateEdited(timer) {
 }
 
 // Set up timer create/edit modal
-function modalSetup(timerParentElement, timer, edit) {
+function modalSetup(timer, edit) {
   var cancelButtonHTML = '<button type="button" class="btn btn-secondary" id="timer-cancel" data-dismiss="modal">Cancel</button>';
   var saveCloseButtonHTML = '<button type="button" class="btn btn-primary" data-dismiss="modal" id="timer-save-close">Save & Close</button>';
   var createButtonsHTML = '<button type="button" class="btn btn-primary" id="timer-create">Create</button>' +
@@ -215,7 +216,6 @@ function modalSetup(timerParentElement, timer, edit) {
   var repeatInput = document.getElementById("timer-repeat");
   var buttonFooter = document.querySelector("#timer-new-modal .modal-footer");
   
-
   // Edit mode
   if (edit) {
     // Set modal title to indicate edit mode
@@ -239,7 +239,7 @@ function modalSetup(timerParentElement, timer, edit) {
       timer.hStart = hInput.value || 0;
       timer.mStart = mInput.value || 0;
       timer.sStart = sInput.value || 0;
-      timer.autoStartInput = autoStartInput.checked;
+      timer.autoStart = autoStartInput.checked;
       timer.nRepeat = repeatInput.value || 1;
       // Reset timer and update timer HTML with new properties
       timer.reset();
@@ -258,12 +258,12 @@ function modalSetup(timerParentElement, timer, edit) {
     var createButton = document.getElementById("timer-create");
 
     createAndCloseButton.onclick = function() {
-      addTimer(timerParentElement, timer, false);
+      addTimer(timer, false);
       // Clear form
       resetModal();
     };
     createButton.onclick = function() {
-      addTimer(timerParentElement, timer, false);
+      addTimer(timer, false);
       // Clear form
       resetModal();
     };
