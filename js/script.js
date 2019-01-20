@@ -94,25 +94,8 @@ function buildAndShowTimerHTML(timer) {
 function resetModal() {
   // Clear form
   document.getElementById("timer-new-form").reset();
-  setAutoStart(false);
-}
-
-function setAutoStart(isOn) {
-  if (isOn) {
-    document.getElementById("timer-autostart-on").checked = true;
-    document.getElementById("timer-autostart-on-label").classList.add("active");
-    document.getElementById("timer-autostart-on").setAttribute("aria-pressed", true);
-    document.getElementById("timer-autostart-off").checked = false;
-    document.getElementById("timer-autostart-off-label").classList.remove("active");
-    document.getElementById("timer-autostart-off").setAttribute("aria-pressed", false);
-  } else {
-    document.getElementById("timer-autostart-on").checked = false;
-    document.getElementById("timer-autostart-on-label").classList.remove("active");
-    document.getElementById("timer-autostart-on").setAttribute("aria-pressed", false);
-    document.getElementById("timer-autostart-off").checked = true;
-    document.getElementById("timer-autostart-off-label").classList.add("active");
-    document.getElementById("timer-autostart-off").setAttribute("aria-pressed", true);
-  }
+  // Enable autostart toggle
+  document.getElementById("timer-autostart").disabled = false;
 }
 
 function addTimer(parent) {
@@ -121,7 +104,7 @@ function addTimer(parent) {
   var s = document.querySelector("#timer-s").value || 0;
   var name = document.querySelector("#timer-name").value || "Timer";
   var description = document.querySelector("#timer-description").value || "";
-  var autoStart = document.getElementById("timer-autostart-on").checked;
+  var autoStart = document.getElementById("timer-autostart").checked;
   var repeat = document.querySelector("#timer-repeat").value || 1;
 
   // Create new timer object from values provided in the form
@@ -213,11 +196,14 @@ function modalSetup(timer, edit) {
   var hInput = document.getElementById("timer-h");
   var mInput = document.getElementById("timer-m");
   var sInput = document.getElementById("timer-s");
-  var autoStartInput = document.getElementById("timer-autostart-on");
-  var autoStartInputLabel = document.getElementById("timer-autostart-on-label");
+  var autoStartInput = document.getElementById("timer-autostart");
   var repeatInput = document.getElementById("timer-repeat");
   var buttonFooter = document.querySelector("#timer-new-modal .modal-footer");
+  var isFirstTimer = (timers.count() === 0) || (timer === timers.getFirst() && edit);
   
+  // Disable auto-start toggle for the first timer
+  autoStartInput.disabled = isFirstTimer;
+
   // Edit mode
   if (edit) {
     // Set modal title to indicate edit mode
@@ -225,11 +211,10 @@ function modalSetup(timer, edit) {
     // Populate inputs from the properties of timer
     nameInput.value = timer.name;
     descriptionInput.value = timer.description;
-    // TODO: change timer properties to just store hms
     hInput.value = timer.hStart;
     mInput.value = timer.mStart;
     sInput.value = timer.sStart;
-    setAutoStart(timer.autoStart);
+    autoStartInput.checked = timer.autoStart;
     repeatInput.value = timer.nRepeat;
     // Insert cancel and save & close buttons
     buttonFooter.innerHTML = cancelButtonHTML + saveCloseButtonHTML;

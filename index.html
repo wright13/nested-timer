@@ -65,15 +65,10 @@
                 </div>
               </div>
               <div class="form-group">
-                <label for="timer-autostart-toggle" class="form-label">Auto-start</label>
                 <div class="form-group">
-                    <div class="btn-group btn-group-toggle" id="timer-autostart-toggle" data-toggle="buttons">
-                      <label class="btn btn-secondary active" id="timer-autostart-off-label">
-                        <input type="radio" name="timer-autostart" id="timer-autostart-off" checked>Off
-                      </label>
-                      <label class="btn btn-secondary" id="timer-autostart-on-label">
-                        <input type="radio" name="timer-autostart" id="timer-autostart-on">On
-                      </label>
+                    <div class="custom-control custom-switch">
+                      <input type="checkbox" class="custom-control-input" id="timer-autostart">
+                      <label class="custom-control-label" for="timer-autostart" id="timer-autostart-label">Auto-start after previous timer completes</label>
                     </div>
                 </div>
                 
