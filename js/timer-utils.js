@@ -152,7 +152,7 @@
 			this.repeatsLeft--;
 			executeCallbacks(this.listeners, "onStart");
 			this.timeCurrent--;
-			executeCallbacks(self.listeners, "onTick");
+			executeCallbacks(this.listeners, "onTick");
 			this.intervalID = window.setInterval(function() {
 										self.running = true;
 										// Decrement the timer's end time every second but don't let it go negative
