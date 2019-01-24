@@ -92,8 +92,9 @@ function buildAndShowTimerHTML(timer) {
 }
 
 function resetModal() {
+  var form = document.getElementById("timer-form");
   // Clear form
-  document.getElementById("timer-new-form").reset();
+  form.reset();
   // Enable autostart toggle
   document.getElementById("timer-autostart").disabled = false;
 }
