@@ -15,6 +15,7 @@
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/bootstrap.bundle.min.js"></script>
     <script src="js/timer-utils.js"></script>
+    <script src="js/validation-utils.js"></script>
     <script src="js/script.js"></script>
 
     <!-- Fonts and Icons-->
@@ -46,7 +47,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <form id="timer-form">
+            <form class="unvalidated" id="timer-form" novalidate>
               <div class="form-group">
                 <label for="timer-name" class="form-label">Label</label>
                 <input type="text" class="form-control" id="timer-name">
@@ -58,35 +59,41 @@
               <div class="form-row">
                 <div class="form-group col-4">
                   <label for="timer-h" class="form-label">Hours</label>
-                  <input type="number" class="form-control" id="timer-h" placeholder="hh">
+                  <input type="number" class="form-control" id="timer-h" min="0" placeholder="hh">
                 </div>
                 <div class="form-group col-4">
                   <label for="timer-m" class="form-label">Minutes</label>
-                  <input type="number" class="form-control" id="timer-m" placeholder="mm">
+                  <input type="number" class="form-control" id="timer-m" min="0" max="59" placeholder="mm">
                 </div>
                 <div class="form-group col-4">
                   <label for="timer-s" class="form-label">Seconds</label>
-                  <input type="number" class="form-control" id="timer-s" placeholder="ss">
+                  <input type="number" class="form-control" id="timer-s" min="0" max="59" placeholder="ss">
+                </div>
+                <div class="form-group col-12">
+                  <div class="invalid-message text-center" id="invalid-hms">
+                  </div>
                 </div>
               </div>
               <div class="form-group">
                 <div class="form-group">
                     <div class="custom-control custom-switch">
-                      <input type="checkbox" class="custom-control-input" id="timer-autostart">
+                      <input type="checkbox" class="custom-control-input" id="timer-autostart" required>
                       <label class="custom-control-label" for="timer-autostart" id="timer-autostart-label">Auto-start after previous timer completes</label>
                     </div>
                 </div>
-                
               </div>
               <div class="form-group">
                 <!-- TODO: Phrase this better to indicate that 1 means run the timer once -->
                 <label for="timer-description" class="form-label">Number of times to repeat</label>
-                <input type="number" class="form-control" id="timer-repeat">
+                <input type="number" class="form-control" id="timer-repeat" min="1">
+              </div>
+              <div class="invalid-message invalid-message-reminder text-center">
+                Please fix all errors before submitting.
               </div>
             </form>
           </div>
           <div class="modal-footer">
-            <!-- Cancel/Save/Create buttons dynamically inserted here -->
+            <!-- Cancel/Save/Create buttons dynamically inserted here -->  
           </div>
         </div>
       </div>

@@ -8,6 +8,45 @@ body{
 	margin-bottom: 40px;
 }
 
+/*Add/edit timer modal*/
+
+input:invalid.validated,
+form.validated input:invalid{
+	border-color: #dc3545;
+}
+
+.invalid-message{
+	display: none;
+	width: 100%;
+	margin-top: 0.25rem;
+	font-size: 80%;
+	color: #dc3545;
+}
+
+.invalid-feedback-reminder{
+	display: none;
+}
+
+#invalid-hms{
+	margin-top: -1rem;
+}
+
+.form-group>#invalid-hms{
+	display: none;
+}
+
+.form-group>.validated#invalid-hms{
+	display: block;
+}
+
+.validated.invalid-message{
+	display: block;
+}
+
+form:invalid.validated .invalid-message-reminder{
+	display: block;
+}
+
 /*Timers*/
 .clock{
 	font-size: 3rem;

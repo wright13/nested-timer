@@ -10,6 +10,17 @@ document.addEventListener("DOMContentLoaded", function (event) {
       modalSetup(null, false);
     });
   }
+
+  // Field-level validation
+  document.addEventListener('blur', function (event) {
+
+    // Only run if the field is in a form to be validated
+    if (!event.target.form || !event.target.form.classList.contains('unvalidated')) return;
+
+    // Validate the field
+    window.validationUtil.validateField(event.target);
+
+  }, true);
   
 });
 
@@ -97,6 +108,8 @@ function resetModal() {
   form.reset();
   // Enable autostart toggle
   document.getElementById("timer-autostart").disabled = false;
+  // Reset validation
+  validationUtil.resetValidation(form);
 }
 
 function addTimer(parent) {
@@ -188,6 +201,7 @@ function updateEdited(timer) {
 
 // Set up timer create/edit modal
 function modalSetup(timer, edit) {
+  var form = document.getElementById("timer-form");
   var cancelButtonHTML = '<button type="button" class="btn btn-secondary" id="timer-cancel" data-dismiss="modal">Cancel</button>';
   var saveCloseButtonHTML = '<button type="button" class="btn btn-primary" data-dismiss="modal" id="timer-save-close">Save & Close</button>';
   var createButtonsHTML = '<button type="button" class="btn btn-primary" id="timer-create">Create</button>' +
@@ -201,9 +215,8 @@ function modalSetup(timer, edit) {
   var repeatInput = document.getElementById("timer-repeat");
   var buttonFooter = document.querySelector("#timer-modal .modal-footer");
   var isFirstTimer = (timers.count() === 0) || (timer === timers.getFirst() && edit);
-  
-  // Disable auto-start toggle for the first timer
-  autoStartInput.disabled = isFirstTimer;
+
+  resetModal();
 
   // Edit mode
   if (edit) {
@@ -220,20 +233,23 @@ function modalSetup(timer, edit) {
     // Insert cancel and save & close buttons
     buttonFooter.innerHTML = cancelButtonHTML + saveCloseButtonHTML;
     var saveAndCloseButton = document.getElementById("timer-save-close");
-    saveAndCloseButton.onclick = function() {
-      // Update timer properties
-      timer.name = nameInput.value || "Timer";
-      timer.description = descriptionInput.value || "";
-      timer.hStart = hInput.value || 0;
-      timer.mStart = mInput.value || 0;
-      timer.sStart = sInput.value || 0;
-      timer.autoStart = autoStartInput.checked;
-      timer.nRepeat = repeatInput.value || 1;
-      // Reset timer and update timer HTML with new properties
-      timer.reset();
-      updateEdited(timer);
-      // Clear inputs
-      resetModal();
+    saveAndCloseButton.onclick = function(event) {
+      // Don't do anything if there are invalid inputs
+      if (validationUtil.validateForm(form, event)) {
+        // Update timer properties
+        timer.name = nameInput.value || "Timer";
+        timer.description = descriptionInput.value || "";
+        timer.hStart = hInput.value || 0;
+        timer.mStart = mInput.value || 0;
+        timer.sStart = sInput.value || 0;
+        timer.autoStart = autoStartInput.checked;
+        timer.nRepeat = repeatInput.value || 1;
+        // Reset timer and update timer HTML with new properties
+        timer.reset();
+        updateEdited(timer);
+        // Clear inputs
+        resetModal();
+      } 
     }
   } else {
   // Create mode
@@ -245,19 +261,30 @@ function modalSetup(timer, edit) {
     var createAndCloseButton = document.getElementById("timer-create-close");
     var createButton = document.getElementById("timer-create");
 
-    createAndCloseButton.onclick = function() {
-      addTimer(timer, false);
-      // Clear form
-      resetModal();
+    createAndCloseButton.onclick = function(event) {
+      if (validationUtil.validateForm(form, event)) {
+        // Insert the new timer into the page
+        addTimer(timer, false);
+        // Clear form
+        resetModal();
+      }
     };
-    createButton.onclick = function() {
-      addTimer(timer, false);
-      // Clear form
-      resetModal();
+    createButton.onclick = function(event) {
+      if (validationUtil.validateForm(form, event)) {
+        // Insert the new timer into the page
+        addTimer(timer, false);
+        // Clear form
+        resetModal();
+      }
     };
   }
+  
+  // Reset the form when cancel button is clicked
   var cancelButton = document.getElementById("timer-cancel");
   cancelButton.onclick = function() {
     resetModal();
   };
+
+  // Disable auto-start toggle for the first timer
+  autoStartInput.disabled = isFirstTimer;
 }
