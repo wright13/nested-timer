@@ -104,10 +104,11 @@ function buildAndShowTimerHTML(timer) {
 
 function resetModal() {
   var form = document.getElementById("timer-form");
+  var autoStartSwitch = document.getElementById("timer-autostart");
   // Clear form
   form.reset();
-  // Enable autostart toggle
-  document.getElementById("timer-autostart").disabled = false;
+  // Enable autostart switch
+  autoStartSwitch.disabled = false;
   // Reset validation
   validationUtil.resetValidation(form);
 }
