@@ -6,8 +6,17 @@
 	function Controller() {
 		this.timers = [];
 	}
+	// Number of timers (not counting children) in the controller
 	Controller.prototype.count = function() {
 		return this.timers.length;
+	}
+	// Sum of start times for all timers in the controller
+	Controller.prototype.totalTime = function() {
+		var total = 0;
+		for (let i = 0; i < this.timers.length; i++) {
+			total += (3600*this.timers[i].hStart + 60*this.timers[i].mStart + 1*this.timers[i].sStart);
+		}
+		return total;
 	}
 	Controller.prototype.addTimer = function(timer) {
 		var self = this;
