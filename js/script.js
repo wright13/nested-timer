@@ -5,8 +5,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
   // When new timer button is clicked and after form is shown, add onclick event handler for create timer button
   var addMainTimerButton = document.getElementById("timer-main-add");
   addMainTimerButton.onclick = function() {
-    $("#timer-new-modal").off("show.bs.modal");
-    $("#timer-new-modal").on("show.bs.modal", function(){
+    $("#timer-modal").off("show.bs.modal"); // Remove existing event handlers
+    $("#timer-modal").on("show.bs.modal", function(){
       modalSetup(null, false);
     });
   }
@@ -66,8 +66,8 @@ function buildAndShowTimerHTML(timer) {
       };
       var addChildButton = document.querySelector("#timer-" + timer.timerId + " .timer-child-add");
       addChildButton.onclick = function(){
-        $("#timer-new-modal").off("show.bs.modal");
-        $("#timer-new-modal").on("show.bs.modal", function(){
+        $("#timer-modal").off("show.bs.modal"); // Remove existing event handlers
+        $("#timer-modal").on("show.bs.modal", function(){
           modalSetup(timer, false);
         });
       };
@@ -79,8 +79,8 @@ function buildAndShowTimerHTML(timer) {
       };
       var editButton = document.querySelector("#timer-" + timer.timerId + " .timer-edit");
       editButton.onclick = function() {
-        $("#timer-new-modal").off("show.bs.modal");
-        $("#timer-new-modal").on("show.bs.modal", function() {
+        $("#timer-modal").off("show.bs.modal"); // Remove existing event handlers
+        $("#timer-modal").on("show.bs.modal", function() {
           modalSetup(timer, true);
         })
       }                         
@@ -198,7 +198,7 @@ function modalSetup(timer, edit) {
   var sInput = document.getElementById("timer-s");
   var autoStartInput = document.getElementById("timer-autostart");
   var repeatInput = document.getElementById("timer-repeat");
-  var buttonFooter = document.querySelector("#timer-new-modal .modal-footer");
+  var buttonFooter = document.querySelector("#timer-modal .modal-footer");
   var isFirstTimer = (timers.count() === 0) || (timer === timers.getFirst() && edit);
   
   // Disable auto-start toggle for the first timer
