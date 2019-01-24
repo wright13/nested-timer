@@ -236,7 +236,9 @@ function modalSetup(timer, edit) {
     var saveAndCloseButton = document.getElementById("timer-save-close");
     saveAndCloseButton.onclick = function(event) {
       // Don't do anything if there are invalid inputs
-      if (validationUtil.validateForm(form, event)) {
+      if (validationUtil.validateForm(form, event, function(form) {
+        customFormValidation(form, timer);
+      })) {
         // Update timer properties
         timer.name = nameInput.value || "Timer";
         timer.description = descriptionInput.value || "";
@@ -263,7 +265,9 @@ function modalSetup(timer, edit) {
     var createButton = document.getElementById("timer-create");
 
     createAndCloseButton.onclick = function(event) {
-      if (validationUtil.validateForm(form, event)) {
+      if (validationUtil.validateForm(form, event, function(form) {
+        customFormValidation(form, timer);
+      })) {
         // Insert the new timer into the page
         addTimer(timer, false);
         // Clear form
@@ -271,7 +275,9 @@ function modalSetup(timer, edit) {
       }
     };
     createButton.onclick = function(event) {
-      if (validationUtil.validateForm(form, event)) {
+      if (validationUtil.validateForm(form, event, function(form) {
+        customFormValidation(form, timer);
+      })) {
         // Insert the new timer into the page
         addTimer(timer, false);
         // Clear form
@@ -289,3 +295,49 @@ function modalSetup(timer, edit) {
   // Disable auto-start toggle for the first timer
   autoStartInput.disabled = isFirstTimer;
 }
+
+function customFormValidation(form, timer) {
+    if (form.id == "timer-form") {
+      var h = document.getElementById("timer-h");
+      var m = document.getElementById("timer-m");
+      var s = document.getElementById("timer-s");
+      var newTime;
+      var timeIsZero;
+      var subtimersExceedParent;
+
+      // Make sure h, m, and s aren't all blank or 0
+      timeIsZero = (h.value == 0) && (m.value == 0) && (s.value == 0);
+
+      // Make sure subtimers don't add up to be longer than parent timer
+      newTime = 3600*h.value + 60*m.value + 1*s.value;
+      if (timer) {
+        var parentTime = 3600*timer.hStart + 60*timer.mStart + 1*timer.sStart;
+        var childTime = 0;
+        if (timer.subTimers) {
+          childTime = timer.subTimers.totalTime();
+        }
+        subtimersExceedParent = ((newTime + childTime) > parentTime);
+      }
+
+      // Set field validity
+      if (timeIsZero || subtimersExceedParent) {
+        h.setCustomValidity("hide");
+        m.setCustomValidity("hide");
+        s.setCustomValidity("hide");
+      } else {
+        h.setCustomValidity("");
+        m.setCustomValidity("");
+        s.setCustomValidity("");
+        
+      }
+
+      // Show/hide error messages
+      if (timeIsZero) {
+        validationUtil.showError(null, "Total time must be greater than 0.", "invalid-hms");
+      } else if (subtimersExceedParent) {
+        validationUtil.showError(null, "Subtimers cannot run longer than the containing timer", "invalid-hms");
+      } else {
+        validationUtil.hideError(null, "invalid-hms");
+      }
+    }
+  }

@@ -4,38 +4,17 @@
 	var errorMessageHTML = '<div class="' + errorMessageClass + '"></div>';
 	var errorReminderClass = "invalid-feedback-reminder";
 	var formValidatedClass = "validated";
-	
-
-	function customFormValidation(form) {
-		if (form.id == "timer-form") {
-			var h = document.getElementById("timer-h");
-			var m = document.getElementById("timer-m");
-			var s = document.getElementById("timer-s");
-			
-			// Make sure h, m, and s aren't all blank or 0
-			if (!(1*h.value) && !(1*m.value) && !(1*s.value)) {
-			  h.setCustomValidity("hide");
-			  m.setCustomValidity("hide");
-			  s.setCustomValidity("hide");
-			  // Show error message
-			  showError(null, "Total time must be greater than 0.", "invalid-hms");
-			} else {
-			  h.setCustomValidity("");
-			  m.setCustomValidity("");
-			  s.setCustomValidity("");
-			  // Hide error message
-			  hideError(null, "invalid-hms");
-			}
-		}
-	}
+	var customValidationFunction;
 
 	// Given a form and the event that triggers form submission, validates the entire form
-	function validateForm(form, event) {
+	function validateForm(form, event, customFormValidation) {
 	var fields;
 	var invalidInputReminders = form.getElementsByClassName(errorReminderClass);
 	var formIsValid;
+	customValidationFunction = customFormValidation;
+		
 		// Form-level validation
-		customFormValidation(form);
+		customValidationFunction(form);
 
 		// Validate individual fields
 		fields = form.elements;
@@ -66,7 +45,7 @@
 
 		// Re-check custom form validity if form-level validation has already occurred
 		if (field.form.classList.contains(formValidatedClass)) {
-			customFormValidation(field.form);
+			customValidationFunction(field.form);
 		}
 
 		// Don't validate submits, buttons, file and reset inputs, and disabled fields
@@ -216,6 +195,8 @@
 	validationUtil.validateField = validateField;
 	validationUtil.validateForm = validateForm;
 	validationUtil.resetValidation = resetValidation;
+	validationUtil.showError = showError;
+	validationUtil.hideError = hideError;
 
 	global.validationUtil = validationUtil;
 
