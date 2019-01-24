@@ -35,6 +35,7 @@
 		});
 	};
 	Controller.prototype.deleteTimer = function(timer) {
+		timer.reset();
 		if (timer.parent) {
 			var parentTimer = timer.parent;
 			timer.parent = null;
