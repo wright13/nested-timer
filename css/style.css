@@ -1,8 +1,22 @@
+html{
+	position: relative;
+	min-height: 100%;
+}
+
 body{
 	font-size: 100%;
+	margin-bottom: 40px;
 }
 
 .clock{
 	font-size: 3rem;
 	margin-top: -.5rem;
+}
+/*Footer*/
+footer{
+	position: absolute;
+	width: 100%;
+	bottom: 0;
+	height: 40px;
+	line-height: 40px;
 }
