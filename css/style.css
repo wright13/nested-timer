@@ -8,10 +8,24 @@ body{
 	margin-bottom: 40px;
 }
 
+/*Timers*/
 .clock{
 	font-size: 3rem;
 	margin-top: -.5rem;
 }
+
+.card .card{
+	margin-top: 0.5rem;
+}
+
+#timer>.card{
+	margin-top: 1rem;
+}
+
+.timer-name{
+	font-size: 1.5rem;
+}
+
 /*Footer*/
 footer{
 	position: absolute;

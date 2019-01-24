@@ -1,8 +1,8 @@
 <div class="card" id="timer-{{timerId}}">
 	<!-- Header -->
-	<nav class="card-header">
-		<div class="timer-name float-left">
-			<h3>{{timerName}}</h3>
+	<nav class="card-header p-1">
+		<div class="timer-name float-left align-middle ml-1">
+			{{timerName}}
 		</div>
 		<div class="float-right timer-tools">
 			<button class="btn timer-child-add" data-toggle="modal" data-target="#timer-modal">
@@ -21,16 +21,16 @@
 	</nav> <!-- End header -->
 	<div class="card-body">
 		<div class="timer-description">
-			<p>{{timerDescription}}</p>
+			{{timerDescription}}
 		</div>
-		<div class="clock">
+		<div class="clock text-center">
 			<span class="h">{{h}}</span>
 	    	<span class="sep">:</span>
 	    	<span class="m">{{m}}</span>
 	    	<span class="sep">:</span>
 	    	<span class="s">{{s}}</span>
 		</div>
-		<div class="timer-controls">
+		<div class="timer-controls text-center">
 			<button class="btn btn-outline-success timer-start">
 				<span class="fas fa-play" aria-hidden="true"></span>
   				<span class="sr-only">Start</span>
@@ -48,7 +48,7 @@
 			
 		</div>
 	</div> <!-- End card body -->
-	<div class="card-footer">
+	<div class="card-footer py-1 px-2">
 		<div class="float-left">
 			Repeat: <span class="repeat-indicator">{{repeat}}</span>
 		</div>
