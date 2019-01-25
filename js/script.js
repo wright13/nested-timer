@@ -237,7 +237,7 @@ function modalSetup(timer, edit) {
     saveAndCloseButton.onclick = function(event) {
       // Don't do anything if there are invalid inputs
       if (validationUtil.validateForm(form, event, function(form) {
-        customFormValidation(form, timer);
+        customFormValidation(form, timer.parent, timer);
       })) {
         // Update timer properties
         timer.name = nameInput.value || "Timer";
@@ -266,7 +266,7 @@ function modalSetup(timer, edit) {
 
     createAndCloseButton.onclick = function(event) {
       if (validationUtil.validateForm(form, event, function(form) {
-        customFormValidation(form, timer);
+        customFormValidation(form, timer, null);
       })) {
         // Insert the new timer into the page
         addTimer(timer, false);
@@ -276,7 +276,7 @@ function modalSetup(timer, edit) {
     };
     createButton.onclick = function(event) {
       if (validationUtil.validateForm(form, event, function(form) {
-        customFormValidation(form, timer);
+        customFormValidation(form, timer, null);
       })) {
         // Insert the new timer into the page
         addTimer(timer, false);
@@ -296,31 +296,45 @@ function modalSetup(timer, edit) {
   autoStartInput.disabled = isFirstTimer;
 }
 
-function customFormValidation(form, timer) {
+function customFormValidation(form, timerParent, timerToEdit) {
     if (form.id == "timer-form") {
       var h = document.getElementById("timer-h");
       var m = document.getElementById("timer-m");
       var s = document.getElementById("timer-s");
       var newTime;
+      var oldTime;
       var timeIsZero;
-      var subtimersExceedParent;
+      var timerExceedsParent;
+      var subtimersExceedTimer;
+      var parentTime;
+      var childTime;
 
       // Make sure h, m, and s aren't all blank or 0
       timeIsZero = (h.value == 0) && (m.value == 0) && (s.value == 0);
 
-      // Make sure subtimers don't add up to be longer than parent timer
+      // Make sure parent timer can contain the new time
       newTime = 3600*h.value + 60*m.value + 1*s.value;
-      if (timer) {
-        var parentTime = 3600*timer.hStart + 60*timer.mStart + 1*timer.sStart;
-        var childTime = 0;
-        if (timer.subTimers) {
-          childTime = timer.subTimers.totalTime();
+      if (timerParent) {
+        parentTime = 3600*timerParent.hStart + 60*timerParent.mStart + 1*timerParent.sStart;
+        childTime = 0;
+        if (timerParent.subTimers) {
+          childTime = timerParent.subTimers.totalTime();
+          // If we're in edit mode, we have to subtract the original time from childTime
+          if (timerToEdit) {
+            oldTime = 3600*timerToEdit.hStart + 60*timerToEdit.mStart + 1*timerToEdit.sStart;
+            childTime -= oldTime;
+          }
         }
-        subtimersExceedParent = ((newTime + childTime) > parentTime);
+        timerExceedsParent = ((newTime + childTime) > parentTime);
+      }
+
+      // Make sure new time can contain subtimers
+      if (timerToEdit) {
+        subtimersExceedTimer = newTime < timerToEdit.subTimers.totalTime();
       }
 
       // Set field validity
-      if (timeIsZero || subtimersExceedParent) {
+      if (timeIsZero || timerExceedsParent || subtimersExceedTimer) {
         h.setCustomValidity("hide");
         m.setCustomValidity("hide");
         s.setCustomValidity("hide");
@@ -332,12 +346,17 @@ function customFormValidation(form, timer) {
       }
 
       // Show/hide error messages
+      if (!(timeIsZero || timerExceedsParent || subtimersExceedTimer)) {
+        validationUtil.hideError(null, "invalid-hms");
+        return;
+      }
+
       if (timeIsZero) {
         validationUtil.showError(null, "Total time must be greater than 0.", "invalid-hms");
-      } else if (subtimersExceedParent) {
-        validationUtil.showError(null, "Subtimers cannot run longer than the containing timer", "invalid-hms");
-      } else {
-        validationUtil.hideError(null, "invalid-hms");
+      } else if (timerExceedsParent) {
+        validationUtil.showError(null, "Selected time is too long for containing timer.", "invalid-hms");
+      } else if (subtimersExceedTimer) {
+        validationUtil.showError(null, "Selected time is shorter than subtimers.", "invalid-hms");
       }
     }
   }
