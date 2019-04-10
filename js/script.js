@@ -131,27 +131,25 @@ function addTimer(parent) {
                         description,
                         autoStart,
                         repeat);
+  var startPauseRepeatSelctors = ["#timer-" + timer.timerId + ">div.row>div.timer-controls>.timer-start",
+                                  "#timer-" + timer.timerId + ">div.row>div.timer-controls>.timer-pause",
+                                  "#timer-" + timer.timerId + ">div.row>div.timer-controls>.timer-reset"];
 
   // UI listener
   uiListener = {
     onStart: function() {
-      // Disable start button
+      updateTimerStateClasses("running", startPauseRepeatSelctors);
     },
     onComplete: function() {
-
+      updateTimerStateClasses("complete", startPauseRepeatSelctors);
     },
     onPause: function() {
-      // Enable start button
-
-      // Disable pause button
+      updateTimerStateClasses("paused", startPauseRepeatSelctors);
     },
     onReset: function() {
       // Update timer display
       updateHMS(timer);
-      // Enable start button
-
-      // Disable reset button
-
+      updateTimerStateClasses("reset", startPauseRepeatSelctors);
     },
     onTick: function() {
       // Update timer display
@@ -162,7 +160,6 @@ function addTimer(parent) {
   timer.addListener(uiListener);
 
   // Add timer to timer list
-  // TODO: make sure total times for child timers are less than the parent time
   if (parent) {
     parent.addSubTimer(timer);
   } else {
@@ -172,6 +169,38 @@ function addTimer(parent) {
 
   // Add timer to page
   buildAndShowTimerHTML(timer);
+
+}
+
+// Given a list of selectors, assign and remove timer state classes
+function updateTimerStateClasses(newState, selectors) {
+  var states = ["running", "paused", "reset", "complete", "new"];
+  var element;
+  // Check if selectors is a single string or an array
+  if (selectors.constructor === Array) {
+    // Iterate through array of selectors
+    for (let i = 0; i < selectors.length; i++) {
+      element = document.querySelector(selectors[i]);
+      // Add the new state and remove the others
+      for (let i = 0; i < states.length; i++) {
+        if (states[i] == newState) {
+          element.classList.add(states[i]);
+        } else {
+          element.classList.remove(states[i]);
+        }
+      }
+    }
+  } else if (typeof(selectors) === "string") {
+    element = document.querySelector(selectors);
+    // Add the new state and remove the others
+    for (let i = 0; i < states.length; i++) {
+        if (states[i] == newState) {
+          element.classList.add(states[i]);
+        } else {
+          element.classList.remove(states[i]);
+        }
+      }
+  }
 
 }
 
@@ -191,8 +220,8 @@ function updateHMS(timer) {
 };
 // Update the parts of the timer display that only change when timer is edited
 function updateEdited(timer) {
-  var titleTarget = document.querySelector("#timer-" + timer.timerId + " .timer-name h3");
-  var descriptionTarget = document.querySelector("#timer-" + timer.timerId + " .timer-description p");
+  var titleTarget = document.querySelector("#timer-" + timer.timerId + " .timer-name");
+  var descriptionTarget = document.querySelector("#timer-" + timer.timerId + " .timer-description");
   var autostartTarget = document.querySelector("#timer-" + timer.timerId + " .autostart-indicator");
 
   titleTarget.innerHTML = timer.name;
@@ -301,6 +330,8 @@ function customFormValidation(form, timerParent, timerToEdit) {
       var h = document.getElementById("timer-h");
       var m = document.getElementById("timer-m");
       var s = document.getElementById("timer-s");
+      var newRepeats = document.getElementById("timer-repeat").value || 1;
+      var oldRepeats;
       var newTime;
       var oldTime;
       var timeIsZero;
@@ -313,7 +344,7 @@ function customFormValidation(form, timerParent, timerToEdit) {
       timeIsZero = (h.value == 0) && (m.value == 0) && (s.value == 0);
 
       // Make sure parent timer can contain the new time
-      newTime = 3600*h.value + 60*m.value + 1*s.value;
+      newTime = newRepeats*(3600*h.value + 60*m.value + 1*s.value);
       if (timerParent) {
         parentTime = 3600*timerParent.hStart + 60*timerParent.mStart + 1*timerParent.sStart;
         childTime = 0;
@@ -321,7 +352,8 @@ function customFormValidation(form, timerParent, timerToEdit) {
           childTime = timerParent.subTimers.totalTime();
           // If we're in edit mode, we have to subtract the original time from childTime
           if (timerToEdit) {
-            oldTime = 3600*timerToEdit.hStart + 60*timerToEdit.mStart + 1*timerToEdit.sStart;
+            oldRepeats = timerToEdit.nRepeat;
+            oldTime = oldRepeats*(3600*timerToEdit.hStart + 60*timerToEdit.mStart + 1*timerToEdit.sStart);
             childTime -= oldTime;
           }
         }

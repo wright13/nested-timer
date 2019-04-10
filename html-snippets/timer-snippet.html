@@ -1,60 +1,77 @@
-<div class="card" id="timer-{{timerId}}">
-	<!-- Header -->
-	<nav class="card-header p-1">
-		<div class="timer-name float-left align-middle ml-1">
-			{{timerName}}
-		</div>
-		<div class="float-right timer-tools">
-			<button class="btn timer-child-add" data-toggle="modal" data-target="#timer-modal">
-				<span class="fas fa-plus" aria-hidden="true"></span>
-	  			<span class="sr-only">New sub-timer</span>
-			</button>
-			<button class="btn timer-edit" data-toggle="modal" data-target="#timer-modal">
-				<span class="fas fa-pen" aria-hidden="true"></span>
-	  			<span class="sr-only">Edit timer</span>
-			</button>
-			<button class="btn timer-delete">
-				<span class="fas fa-trash" aria-hidden="true"></span>
-	  			<span class="sr-only">Delete timer</span>
-			</button>
-		</div>
-	</nav> <!-- End header -->
-	<div class="card-body">
-		<div class="timer-description">
-			{{timerDescription}}
-		</div>
-		<div class="clock text-center">
-			<span class="h">{{h}}</span>
-	    	<span class="sep">:</span>
-	    	<span class="m">{{m}}</span>
-	    	<span class="sep">:</span>
-	    	<span class="s">{{s}}</span>
-		</div>
-		<div class="timer-controls text-center">
-			<button class="btn btn-outline-success timer-start">
+<!-- Timer card-->
+<div class="timer-card" id="timer-{{timerId}}">
+	<div class="row">
+		<!-- Start/stop/pause controls -->
+		<div class="timer-controls col-2">
+			<button class="new timer-start">
 				<span class="fas fa-play" aria-hidden="true"></span>
-  				<span class="sr-only">Start</span>
+					<span class="sr-only">Start</span>
 			</button>
-			<button class="btn btn-outline-warning timer-pause">
+			<button class="new timer-pause">
 				<span class="fas fa-pause" aria-hidden="true"></span>
-  				<span class="sr-only">Pause</span>
+					<span class="sr-only">Pause</span>
 			</button>
-			<button class="btn btn-outline-danger timer-reset">
+			<button class="new timer-reset">
 				<span class="fas fa-undo-alt" aria-hidden="true"></span>
-  				<span class="sr-only">Reset</span>
+					<span class="sr-only">Reset</span>
 			</button>
-		</div>
-		<div class="timer-child">
+		</div> <!-- End start/stop/pause controls -->
+		<!-- Main timer content -->
+		<div class="timer-main col-10">
+			<div class="row">
+				
+				<!-- Timer data (time/name/repeat/autostart) -->
+				<div class="timer-data col-12">
+					<div class="row">
+						<!-- Clock -->
+						<div class="clock col-12">
+							<span class="h">{{h}}</span>
+					    	<span class="sep">:</span>
+					    	<span class="m">{{m}}</span>
+					    	<span class="sep">:</span>
+					    	<span class="s">{{s}}</span>
+						
+						<div class="float-right">
+								<button class="btn timer-child-add" data-toggle="modal" data-target="#timer-modal">
+									<span class="fas fa-plus" aria-hidden="true"></span>
+						  			<span class="sr-only">New sub-timer</span>
+								</button>
+								<button class="btn timer-edit" data-toggle="modal" data-target="#timer-modal">
+									<span class="fas fa-pen" aria-hidden="true"></span>
+						  			<span class="sr-only">Edit timer</span>
+								</button>
+								<button class="btn timer-delete">
+									<span class="fas fa-trash" aria-hidden="true"></span>
+						  			<span class="sr-only">Delete timer</span>
+								</button>
+							</div>
+</div> <!-- End clock -->
+						<!-- Timer name/description -->
+						<div class="timer-info col-12">
+							<div class="timer-name">
+								{{timerName}}
+							</div>
+							<div class="timer-description">
+								{{timerDescription}}
+							</div>
+						</div> <!-- End timer name/description -->
+						<!-- Repeat/autostart -->
+						<div class="repeat-autostart col-12">
+							<div class="float-left">
+								Repeat: <span class="repeat-indicator">{{repeat}}</span>
+							</div>
+							<div class="float-right">
+								Auto-start: <span class="autostart-indicator">{{autoStart}}</span>
+							</div>
+						</div> <!-- End repeat/autostart -->
+					</div> <!-- End row -->
+				</div> <!-- End timer data -->
+			</div> <!-- End row -->
+		</div> <!-- End main timer content -->
+		<!-- Subtimers -->
+		<div class="col-1"></div>
+		<div class="timer-child col-11">
 			
-		</div>
-	</div> <!-- End card body -->
-	<div class="card-footer py-1 px-2">
-		<div class="float-left">
-			Repeat: <span class="repeat-indicator">{{repeat}}</span>
-		</div>
-		<div class="float-right">
-			Auto-start: <span class="autostart-indicator">{{autoStart}}</span>
-		</div>
-	</div>
-	
-</div>
+		</div> <!-- End subtimers -->
+	</div> <!-- End row -->
+</div><!-- End timer card -->

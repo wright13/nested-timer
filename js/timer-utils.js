@@ -10,11 +10,11 @@
 	Controller.prototype.count = function() {
 		return this.timers.length;
 	}
-	// Sum of start times for all timers in the controller
+	// Time it will take to run all the timers in the controller, including repeats
 	Controller.prototype.totalTime = function() {
 		var total = 0;
 		for (let i = 0; i < this.timers.length; i++) {
-			total += (3600*this.timers[i].hStart + 60*this.timers[i].mStart + 1*this.timers[i].sStart);
+			total += this.timers[i].nRepeat*(3600*this.timers[i].hStart + 60*this.timers[i].mStart + 1*this.timers[i].sStart);
 		}
 		return total;
 	}
@@ -180,9 +180,11 @@
 
 	// Pause the timer but don't reset the end time
 	Timer.prototype.pause = function() {
-		window.clearInterval(this.intervalID);
-		this.running = false;
-		executeCallbacks(this.listeners, "onPause");
+		if (this.running) {
+			window.clearInterval(this.intervalID);
+			this.running = false;
+			executeCallbacks(this.listeners, "onPause");
+		}
 	};
 
 	// Stop the timer and reset the end time

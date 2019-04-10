@@ -8,7 +8,7 @@ body{
 	margin-bottom: 40px;
 }
 
-/*Add/edit timer modal*/
+/*-------Add/edit timer modal-------*/
 
 input:invalid.validated,
 form.validated input:invalid{
@@ -47,25 +47,124 @@ form:invalid.validated .invalid-message-reminder{
 	display: block;
 }
 
-/*Timers*/
+/*-------Timers-------*/
+
+/*Timer card*/
+.timer-card{
+	border: solid blue 1px;
+	border-left: solid blue 15px;
+	margin: .5rem;
+}
+
+/*Add/edit/delete buttons*/
+.timer-options{
+	width: 100%;
+	padding-right: 0.5rem;
+}
+
+.timer-options button{
+	padding: 0.3rem;
+}
+
+/*Start/pause/reset buttons*/
+.timer-controls{
+	/*height: 100%;*/
+}
+
+.timer-start{
+	background-color: white;
+	border: none;
+	color: green;
+	font-size: 4rem;
+	margin-left: auto;
+	margin-right: auto;
+	height: 100%;
+}
+
+.timer-pause{
+	background-color: white;
+	border: none;
+	color: orange;
+	font-size: 4rem;
+	margin-left: auto;
+	margin-right: auto;
+	height: 100%;
+}
+
+.timer-reset{
+	background-color: white;
+	border: none;
+	color: red;
+	font-size: 4rem;
+	margin-left: auto;
+	margin-right: auto;
+	height: 100%;
+}
+
+.timer-start.running,
+.timer-start.complete{
+	display: none;
+}
+
+.timer-start.reset,
+.timer-start.new{
+	display: block;
+}
+
+.timer-start.paused{
+	display: block;
+	height: 80%;
+	font-size: 3.5rem;
+}
+
+.timer-pause.paused,
+.timer-pause.complete,
+.timer-pause.reset,
+.timer-pause.new{
+	display: none;
+}
+
+.timer-pause.running{
+	display: block;
+	height: 80%;
+	font-size: 3.5rem;
+}
+
+.timer-reset.reset,
+.timer-reset.new{
+	display: none;
+}
+.timer-reset.running,
+.timer-reset.paused{
+	display: block;
+	height:20%;
+	font-size: 1.5rem;
+	margin-top: -1rem;
+}
+.timer-reset.complete{
+	display: block;
+}
+
+/*Clock*/
 .clock{
 	font-size: 3rem;
-	margin-top: -.5rem;
+	margin-top: -1rem;
+	margin-bottom: -1rem;
 }
 
-.card .card{
-	margin-top: 0.5rem;
-}
-
-#timer>.card{
-	margin-top: 1rem;
-}
-
+/*Name and description*/
 .timer-name{
 	font-size: 1.5rem;
 }
 
-/*Footer*/
+/*Repeat/autostart settings*/
+
+/*Child timer*/
+.timer-child{
+	/*margin-left: 2rem;*/
+}
+
+/*-------Footer-------*/
 footer{
 	position: absolute;
 	width: 100%;
